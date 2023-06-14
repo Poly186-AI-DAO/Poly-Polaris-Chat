@@ -20,11 +20,10 @@
 name: Deploy App
 
 env:
-  #AZURE_WEBAPP_NAME: dataaipdfchat  # set this to the name of your Azure Web App
-  PYTHON_VERSION: '3.9'              # set this to the Python version to use
-  NODE_VERSION: '16.x'                      # set this to the node version to use (e.g. '8.x', '10.x', '12.x')
-  AZURE_NODEJS_PACKAGE_PATH: 'app/frontend'       # set this to the path to your function app project, defaults to the repository root
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'app/backend'
+  AZURE_WEBAPP_NAME: 'polychatapp'
+  PYTHON_VERSION: '3.9'              
+  NODE_VERSION: '16.x'                      
+  AZURE_NODEJS_PACKAGE_PATH: 'app/frontend'
 
 on:
   push:
@@ -47,7 +46,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: 'Resolve Project Dependencies Using Npm'
-        shell: bash # For Linux, use bash
+        shell: bash 
         run: |
           pushd './${{ env.AZURE_NODEJS_PACKAGE_PATH }}'
           export NODE_OPTIONS="--max_old_space_size=4096"

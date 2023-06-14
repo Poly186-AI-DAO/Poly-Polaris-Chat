@@ -24,9 +24,9 @@ on:
   workflow_dispatch:
 
 env:
-  #AZURE_FUNCTIONAPP_NAME: 'dataaichatpdf'   # set this to your function app name on Azure
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'api/Python'       # set this to the path to your function app project, defaults to the repository root
-  PYTHON_VERSION: '3.9'                     # set this to the python version to use (e.g. '3.6', '3.7', '3.8')
+  AZURE_FUNCTIONAPP_NAME: 'polychatfunc'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'api/Python'       
+  PYTHON_VERSION: '3.9'                     
 
 jobs:
   build-and-deploy:
@@ -39,7 +39,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }} # set up AZURE_RBAC_CREDENTIALS secrets in your repository
+        creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}
 
     - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
       uses: actions/setup-python@v4
