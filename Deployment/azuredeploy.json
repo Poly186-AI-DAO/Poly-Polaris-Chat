@@ -91,7 +91,7 @@
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2022-12-01",
             "name": "[variables('aoaiSvcName')]",
-            "location": "[parameters('location')]",
+            "location": "westeurope",
             "tags": {
                 "azd-env-name": "aoaipdf"
             },
@@ -110,7 +110,7 @@
             "name": "[variables('speechSvcName')]",
             "location": "[parameters('location')]",
             "sku": {
-                "name": "F0"
+                "name": "S0"
             },
             "kind": "SpeechServices",
             "identity": {
@@ -299,7 +299,7 @@
                 "zoneRedundant": false
             }
         },
-        {
+         {
             "type": "Microsoft.CognitiveServices/accounts/deployments",
             "apiVersion": "2022-12-01",
             "name": "[concat(variables('aoaiSvcName'), '/chat')]",
@@ -346,7 +346,7 @@
                 "model": {
                     "format": "OpenAI",
                     "name": "text-embedding-ada-002",
-                    "version": "1"
+                    "version": "2"
                 },
                 "scaleSettings": {
                     "scaleType": "Standard"
