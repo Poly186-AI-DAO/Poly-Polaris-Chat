@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
-import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle} from "@fluentui/react";
+import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle } from "@fluentui/react";
 
 import github from "../../assets/github.svg"
 
@@ -35,15 +35,15 @@ const Layout = () => {
         <div className={styles.layout}>
             <header className={styles.header} role={"banner"}>
                 <div className={styles.headerContainer}>
-                    <Link to="https://dataaipdfchat.azurewebsites.net/" target={"_blank"} className={styles.headerTitleContainer}>
-                        <h3 className={styles.headerTitle}>Chat and Ask</h3>
+                    <Link to="https://dataaipdfchat.azurewebsites.net/" target="_blank" className={styles.headerTitleContainer}>
+                        <img src="/poly186_logo.png" alt="Poly Chat Logo" className={styles.logoImage} />
                     </Link>
                     <nav>
                         <ul className={styles.headerNavList}>
                             {showUpload && (
                                 <li className={styles.headerNavLeftMargin}>
                                     <NavLink to="/upload" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
-                                    Upload &nbsp;&nbsp;&nbsp;
+                                        Upload &nbsp;&nbsp;&nbsp;
                                     </NavLink>
                                 </li>
                             )}
@@ -87,26 +87,26 @@ const Layout = () => {
                                     Developer Tools
                                 </NavLink>
                             </li>
-                            { showSpeech && (
+                            {showSpeech && (
                                 <li className={styles.headerNavLeftMargin}>
                                     <NavLink to="/speech" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
                                         Speech Analytics
                                     </NavLink>
-                                 </li>
+                                </li>
                             )}
                             {showEdgar && (
-                                 <li className={styles.headerNavLeftMargin}>
-                                 <NavLink to="/edgar" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
-                                     Edgar Analysis
-                                 </NavLink>
-                             </li>
+                                <li className={styles.headerNavLeftMargin}>
+                                    <NavLink to="/edgar" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
+                                        Edgar Analysis
+                                    </NavLink>
+                                </li>
                             )}
                             {showAdmin && (
-                                 <li className={styles.headerNavLeftMargin}>
-                                 <NavLink to="/admin" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
-                                     Admin
-                                 </NavLink>
-                             </li>
+                                <li className={styles.headerNavLeftMargin}>
+                                    <NavLink to="/admin" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
+                                        Admin
+                                    </NavLink>
+                                </li>
                             )}
                             {/* <li className={styles.headerNavLeftMargin}>
                                 <NavLink to="/help" className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}>
@@ -142,28 +142,28 @@ const Layout = () => {
                 onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                 isFooterAtBottom={true}
             >
-                <br/>
+                <br />
                 <Checkbox
                     className={styles.chatSettingsSeparator}
                     checked={showUpload}
                     label="Show Upload Capability"
                     onChange={onShowUpload}
                 />
-                <br/>
+                <br />
                 <Checkbox
                     className={styles.chatSettingsSeparator}
                     checked={showEdgar}
                     label="Display Edgar Analysis"
                     onChange={onShowEdgar}
                 />
-                <br/>
+                <br />
                 <Checkbox
                     className={styles.chatSettingsSeparator}
                     checked={showSpeech}
                     label="Display Speech Analytics"
                     onChange={onShowSpeech}
                 />
-                <br/>
+                <br />
                 <Checkbox
                     className={styles.chatSettingsSeparator}
                     checked={showAdmin}
