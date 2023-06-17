@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle} from "@fluentui/react";
+import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle } from "@fluentui/react";
 
 import styles from "./OneShot.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
@@ -61,8 +61,8 @@ const OneShot = () => {
 
     //const [selectedIndex, setSelectedIndex] = useState<IDropdownOption>();
     const [selectedIndex, setSelectedIndex] = useState<string>();
-    const [indexMapping, setIndexMapping] = useState<{ key: string; iType: string;  summary:string; qa:string;}[]>();
-    const [exampleList, setExampleList] = useState<ExampleModel[]>([{text:'', value: ''}]);
+    const [indexMapping, setIndexMapping] = useState<{ key: string; iType: string; summary: string; qa: string; }[]>();
+    const [exampleList, setExampleList] = useState<ExampleModel[]>([{ text: '', value: '' }]);
     const [summary, setSummary] = useState<string>();
     const [agentSummary, setAgentSummary] = useState<string>();
     const [taskAgentSummary, setTaskAgentSummary] = useState<string>();
@@ -85,12 +85,12 @@ const OneShot = () => {
 
     const embeddingOptions = [
         {
-          key: 'azureopenai',
-          text: 'Azure Open AI'
+            key: 'openai',
+            text: 'Open AI'
         },
         {
-          key: 'openai',
-          text: 'Open AI'
+            key: 'azureopenai',
+            text: 'Azure Open AI'
         }
         // {
         //   key: 'local',
@@ -100,12 +100,12 @@ const OneShot = () => {
 
     const indexTypeOptions = [
         {
-          key: 'pinecone',
-          text: 'Pinecone'
+            key: 'pinecone',
+            text: 'Pinecone'
         },
         {
-          key: 'redis',
-          text: 'Redis Stack'
+            key: 'redis',
+            text: 'Redis Stack'
         }
         // {
         //   key: 'chroma',
@@ -114,51 +114,50 @@ const OneShot = () => {
     ]
 
     const stackItemStyles: IStackItemStyles = {
-    root: {
-        alignItems: 'left',
-        // background: DefaultPalette.white,
-        // color: DefaultPalette.white,
-        display: 'flex',
-        justifyContent: 'left',
-    },
+        root: {
+            alignItems: 'left',
+            // background: DefaultPalette.white,
+            // color: DefaultPalette.white,
+            display: 'flex',
+            justifyContent: 'left',
+        },
     };
 
-     // Tokens definition
-     const outerStackTokens: IStackTokens = { childrenGap: 5 };
-     const innerStackTokens: IStackTokens = {
-       childrenGap: 5,
-       padding: 10,
+    // Tokens definition
+    const outerStackTokens: IStackTokens = { childrenGap: 5 };
+    const innerStackTokens: IStackTokens = {
+        childrenGap: 5,
+        padding: 10,
     };
 
     const chainType = [
-        { key: 'stuff', text: 'Stuff'},
+        { key: 'stuff', text: 'Stuff' },
         { key: 'map_rerank', text: 'Map ReRank' },
         { key: 'map_reduce', text: 'Map Reduce' },
-        { key: 'refine', text: 'Refine'},
+        { key: 'refine', text: 'Refine' },
     ]
 
-    const refreshFilteredBlob = async(selectedIndex : string) => {
+    const refreshFilteredBlob = async (selectedIndex: string) => {
         const files = []
         const indexType = []
-    
+
         //const blobs = containerClient.listBlobsFlat(listOptions)
-        const blobs = await refreshIndex()       
+        const blobs = await refreshIndex()
         for (const blob of blobs.values) {
-          if (blob.embedded == "true" && blob.indexType == selectedIndex)
-          {
-            files.push({
-                text: blob.indexName,
-                key: blob.namespace
-            })
-            indexType.push({
-                    key:blob.namespace,
-                    iType:blob.indexType,
-                    summary:blob.summary,
-                    qa:blob.qa
-            })
-          }
+            if (blob.embedded == "true" && blob.indexType == selectedIndex) {
+                files.push({
+                    text: blob.indexName,
+                    key: blob.namespace
+                })
+                indexType.push({
+                    key: blob.namespace,
+                    iType: blob.indexType,
+                    summary: blob.summary,
+                    qa: blob.qa
+                })
+            }
         }
-        var uniqFiles = files.filter((v,i,a)=>a.findIndex(v2=>(v2.key===v.key))===i)
+        var uniqFiles = files.filter((v, i, a) => a.findIndex(v2 => (v2.key === v.key)) === i)
         setFilteredOptions(uniqFiles)
         setFilteredTaskAgentOptions(uniqFiles)
     }
@@ -174,14 +173,14 @@ const OneShot = () => {
                 item.selected ? [...selectedKeys, item.key as string] : selectedKeys.filter(key => key !== item.key),
             );
             setSelectedIndexes(
-                item.selected ? [...selectedIndexes, {"indexNs":item.key as string, "indexName": item.text, "returnDirect": "False"}] : selectedIndexes.filter(key => key.indexNs !== item.key),
+                item.selected ? [...selectedIndexes, { "indexNs": item.key as string, "indexName": item.text, "returnDirect": "False" }] : selectedIndexes.filter(key => key.indexNs !== item.key),
             );
             setSelectedText(
                 item.selected ? [...selectedText, item.text as string] : selectedText.filter(key => key !== item.text),
             );
-            setAgentSummary("This sample shows using Agents use an LLM to determine which actions to take and in what order." + 
-            " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" + 
-            " set of the documents that you select here - " + (item.selected ? [...selectedText, item.text as string] : selectedText.filter(key => key !== item.text)))
+            setAgentSummary("This sample shows using Agents use an LLM to determine which actions to take and in what order." +
+                " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" +
+                " set of the documents that you select here - " + (item.selected ? [...selectedText, item.text as string] : selectedText.filter(key => key !== item.text)))
         }
     };
 
@@ -191,19 +190,19 @@ const OneShot = () => {
                 item.selected ? [...selectedTaskAgentKeys, item.key as string] : selectedTaskAgentKeys.filter(key => key !== item.key),
             );
             setSelectedTaskAgentIndexes(
-                item.selected ? [...selectedTaskAgentIndexes, {"indexNs":item.key as string, "indexName": item.text, "returnDirect": "False"}] : selectedTaskAgentIndexes.filter(key => key.indexNs !== item.key),
+                item.selected ? [...selectedTaskAgentIndexes, { "indexNs": item.key as string, "indexName": item.text, "returnDirect": "False" }] : selectedTaskAgentIndexes.filter(key => key.indexNs !== item.key),
             );
             setSelectedTaskAgentText(
                 item.selected ? [...selectedTaskAgentText, item.text as string] : selectedTaskAgentText.filter(key => key !== item.text),
             );
             setTaskAgentSummary("This sample demonstrates how to implement BabyAGI by Yohei Nakajima. BabyAGI is an AI agent that can generate and pretend to execute tasks based on a given objective." +
-            " An action can either be using a tool and observing its output, or returning to the user.  " + 
-            " It is example of an AI-powered task management system. The system uses OpenAI and creates, prioritize, and execute tasks. " + 
-            " The main idea behind this system is that it creates tasks based on the result of previous tasks and a predefined objective. " +
-            " The script then uses OpenAI's natural language processing (NLP) capabilities to create new tasks based on the objective, and retrieve task results for context. " +
-            " This is a pared-down version of the original Task-Driven Autonomous Agent " +
-            " Agent will go against the" + 
-            " set of the documents that you select here - " + (item.selected ? [...selectedTaskAgentText, item.text as string] : selectedTaskAgentText.filter(key => key !== item.text)))
+                " An action can either be using a tool and observing its output, or returning to the user.  " +
+                " It is example of an AI-powered task management system. The system uses OpenAI and creates, prioritize, and execute tasks. " +
+                " The main idea behind this system is that it creates tasks based on the result of previous tasks and a predefined objective. " +
+                " The script then uses OpenAI's natural language processing (NLP) capabilities to create new tasks based on the objective, and retrieve task results for context. " +
+                " This is a pared-down version of the original Task-Driven Autonomous Agent " +
+                " Agent will go against the" +
+                " set of the documents that you select here - " + (item.selected ? [...selectedTaskAgentText, item.text as string] : selectedTaskAgentText.filter(key => key !== item.text)))
 
         }
     };
@@ -238,7 +237,7 @@ const OneShot = () => {
             const result = await askApi(request, String(selectedItem?.key), String(selectedIndex), 'stuff');
             //setAnswer(result);
             setAnswer([result, null]);
-            if(useAutoSpeakAnswers) {
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setAnswer([result, speechUrl]);
                 startSynthesis("Answer", speechUrl);
@@ -281,7 +280,7 @@ const OneShot = () => {
             const result = await askAgentApi(request);
             //setAgentAnswer(result);
             setAgentAnswer([result, null]);
-            if(useAutoSpeakAnswers) {
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setAgentAnswer([result, speechUrl]);
                 startSynthesis("AnswerAgent", speechUrl);
@@ -323,7 +322,7 @@ const OneShot = () => {
             };
             const result = await askTaskAgentApi(request);
             setTaskAgentAnswer([result, null]);
-            if(useAutoSpeakAnswers) {
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setTaskAgentAnswer([result, speechUrl]);
                 startSynthesis("AnswerTaskAgent", speechUrl);
@@ -336,12 +335,12 @@ const OneShot = () => {
     };
 
     const startSynthesis = async (answerType: string, url: string | null) => {
-        if(isSpeaking) {
+        if (isSpeaking) {
             audio.pause();
             setIsSpeaking(false);
         }
 
-        if(url === null) {
+        if (url === null) {
             let speechAnswer;
             if (answerType == "Answer")
                 speechAnswer = answer && answer[0].answer;
@@ -367,7 +366,7 @@ const OneShot = () => {
             setIsSpeaking(true);
             audio.addEventListener('ended', () => {
                 setIsSpeaking(false);
-            });    
+            });
         }
     };
 
@@ -452,31 +451,30 @@ const OneShot = () => {
     const refreshBlob = async () => {
         const files = []
         const indexType = []
-    
+
         //const blobs = containerClient.listBlobsFlat(listOptions)
-        const blobs = await refreshIndex()       
+        const blobs = await refreshIndex()
         for (const blob of blobs.values) {
-          if (blob.embedded == "true")
-          {
-            files.push({
-                text: blob.indexName,
-                key: blob.namespace
-            })
-            indexType.push({
-                    key:blob.namespace,
-                    iType:blob.indexType,
-                    summary:blob.summary,
-                    qa:blob.qa == null ? '' : blob.qa
-            })
-          }
+            if (blob.embedded == "true") {
+                files.push({
+                    text: blob.indexName,
+                    key: blob.namespace
+                })
+                indexType.push({
+                    key: blob.namespace,
+                    iType: blob.indexType,
+                    summary: blob.summary,
+                    qa: blob.qa == null ? '' : blob.qa
+                })
+            }
         }
-        var uniqFiles = files.filter((v,i,a)=>a.findIndex(v2=>(v2.key===v.key))===i)
+        var uniqFiles = files.filter((v, i, a) => a.findIndex(v2 => (v2.key === v.key)) === i)
         setOptions(uniqFiles)
         setSelectedItem(uniqFiles[0])
 
         const defaultKey = uniqFiles[0].key
-       
-        var uniqIndexType = indexType.filter((v,i,a)=>a.findIndex(v2=>(v2.key===v.key))===i)
+
+        var uniqIndexType = indexType.filter((v, i, a) => a.findIndex(v2 => (v2.key === v.key)) === i)
 
         for (const item of uniqIndexType) {
             if (item.key == defaultKey) {
@@ -485,14 +483,14 @@ const OneShot = () => {
                 setQa(item.qa)
 
                 const sampleQuestion = []
-                const  questionList = item.qa.split("\\n")
+                const questionList = item.qa.split("\\n")
                 for (const item of questionList) {
                     if ((item != '')) {
                         sampleQuestion.push({
                             text: item.replace(/[0-9]./g, ''),
                             value: item.replace(/[0-9]./g, ''),
                         })
-                    } 
+                    }
                 }
                 const generatedExamples: ExampleModel[] = sampleQuestion
                 setExampleList(generatedExamples)
@@ -502,10 +500,10 @@ const OneShot = () => {
         setIndexMapping(uniqIndexType)
     }
 
-    const refreshSummary = async (requestType : string) => {
+    const refreshSummary = async (requestType: string) => {
         try {
-            const result = await summaryAndQa(String(selectedIndex), String(selectedItem?.key), String(selectedEmbeddingItem?.key), 
-            requestType, 'stuff');
+            const result = await summaryAndQa(String(selectedIndex), String(selectedItem?.key), String(selectedEmbeddingItem?.key),
+                requestType, 'stuff');
             refreshBlob();
         } catch (e) {
         } finally {
@@ -524,14 +522,14 @@ const OneShot = () => {
 
                 const sampleQuestion = []
 
-                const  questionList = item.qa.split("\\n")
+                const questionList = item.qa.split("\\n")
                 for (const item of questionList) {
                     if ((item != '')) {
                         sampleQuestion.push({
                             text: item.replace(/[0-9]./g, ''),
                             value: item.replace(/[0-9]./g, ''),
                         })
-                    } 
+                    }
                 }
                 const generatedExamples: ExampleModel[] = sampleQuestion
                 setExampleList(generatedExamples)
@@ -546,20 +544,20 @@ const OneShot = () => {
 
     const onTabChange = (item?: PivotItem | undefined, ev?: React.MouseEvent<HTMLElement, MouseEvent> | undefined): void => {
         if (item?.props.headerText === "Agent QA") {
-            setAgentSummary("This sample shows using Agents use an LLM to determine which actions to take and in what order." + 
-            " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" + 
-            " set of the documents that you select here")
-        } 
+            setAgentSummary("This sample shows using Agents use an LLM to determine which actions to take and in what order." +
+                " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" +
+                " set of the documents that you select here")
+        }
         if (item?.props.headerText === "Task Agent QA") {
-            setTaskAgentSummary("This sample demonstrates how to implement BabyAGI by Yohei Nakajima. BabyAGI is an AI agent that can " + 
-            " generate and pretend to execute tasks based on a given objective." + 
-            " It is example of an AI-powered task management system. The system uses OpenAI and creates, prioritize, and execute tasks. " + 
-            " The main idea behind this system is that it creates tasks based on the result of previous tasks and a predefined objective. " +
-            " The script then uses OpenAI's natural language processing (NLP) capabilities to create new tasks based on the objective, and retrieve task results for context. " +
-            " This is a pared-down version of the original Task-Driven Autonomous Agent " +
-            " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" + 
-            " set of the documents that you select here")
-        } 
+            setTaskAgentSummary("This sample demonstrates how to implement BabyAGI by Yohei Nakajima. BabyAGI is an AI agent that can " +
+                " generate and pretend to execute tasks based on a given objective." +
+                " It is example of an AI-powered task management system. The system uses OpenAI and creates, prioritize, and execute tasks. " +
+                " The main idea behind this system is that it creates tasks based on the result of previous tasks and a predefined objective. " +
+                " The script then uses OpenAI's natural language processing (NLP) capabilities to create new tasks based on the objective, and retrieve task results for context. " +
+                " This is a pared-down version of the original Task-Driven Autonomous Agent " +
+                " An action can either be using a tool and observing its output, or returning to the user.  Agent will go against the" +
+                " set of the documents that you select here")
+        }
     };
 
     useEffect(() => {
@@ -613,216 +611,216 @@ const OneShot = () => {
 
         <div className={styles.root}>
             <div className={styles.oneshotContainer}>
-            <Pivot aria-label="QA" onLinkClick={onTabChange}>
+                <Pivot aria-label="QA" onLinkClick={onTabChange}>
                     <PivotItem
                         headerText="QA"
                         headerButtonProps={{
-                        'data-order': 1,
+                            'data-order': 1,
                         }}
                     >
-                            <div className={styles.oneshotTopSection}>
-                                <div className={styles.commandsContainer}>
-                                    <ClearChatButton className={styles.settingsButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
-                                    <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                                    <div className={styles.settingsButton}>{selectedItem ? 
-                                            "Document Name : "  + selectedItem.text : undefined}</div>
-                                </div>
-                                <h1 className={styles.oneshotTitle}>Ask your data</h1>
-                                <div className={styles.example}>
-                                    <p className={styles.exampleText}><b>Document Summary</b> : {summary}</p>
-                                </div>
-                                <br/>
-                                <div className={styles.oneshotQuestionInput}>
-                                    <QuestionInput
-                                        placeholder="Ask me anything"
-                                        updateQuestion={lastQuestionRef.current}
-                                        disabled={isLoading}
-                                        onSend={question => makeApiRequest(question)}
-                                    />
-                                </div>
-                                {!answer && (<h4 className={styles.chatEmptyStateSubtitle}>Ask anything or try from following example</h4>)}
-                                {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner/></div> : null}
-                                <ExampleList onExampleClicked={onExampleClicked}
+                        <div className={styles.oneshotTopSection}>
+                            <div className={styles.commandsContainer}>
+                                <ClearChatButton className={styles.settingsButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
+                                <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
+                                <div className={styles.settingsButton}>{selectedItem ?
+                                    "Document Name : " + selectedItem.text : undefined}</div>
+                            </div>
+                            <h1 className={styles.oneshotTitle}>Ask your data</h1>
+                            <div className={styles.example}>
+                                <p className={styles.exampleText}><b>Document Summary</b> : {summary}</p>
+                            </div>
+                            <br />
+                            <div className={styles.oneshotQuestionInput}>
+                                <QuestionInput
+                                    placeholder="Ask me anything"
+                                    updateQuestion={lastQuestionRef.current}
+                                    disabled={isLoading}
+                                    onSend={question => makeApiRequest(question)}
+                                />
+                            </div>
+                            {!answer && (<h4 className={styles.chatEmptyStateSubtitle}>Ask anything or try from following example</h4>)}
+                            {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner /></div> : null}
+                            <ExampleList onExampleClicked={onExampleClicked}
                                 EXAMPLES={
                                     exampleList
                                 } />
-                            </div>
-                            <div className={styles.oneshotBottomSection}>
-                                {isLoading && <Spinner label="Generating answer" />}
-                                {!isLoading && answer && !error && (
-                                    <div>
-                                        <div className={styles.oneshotAnswerContainer}>
-                                            <Stack horizontal horizontalAlign="space-between">
-                                                <Answer
-                                                    answer={answer[0]}
-                                                    isSpeaking = {isSpeaking}
-                                                    onCitationClicked={x => onShowCitation(x)}
-                                                    onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
-                                                    onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
-                                                    onFollowupQuestionClicked={q => makeApiRequest(q)}
-                                                    showFollowupQuestions={useSuggestFollowupQuestions}
-                                                    onSpeechSynthesisClicked={() => isSpeaking? stopSynthesis(): startSynthesis("Answer", answer[1])}
-                                                />
-                                            </Stack>                               
-                                        </div>
-                                    </div>
-                                )}
-                                {error ? (
+                        </div>
+                        <div className={styles.oneshotBottomSection}>
+                            {isLoading && <Spinner label="Generating answer" />}
+                            {!isLoading && answer && !error && (
+                                <div>
                                     <div className={styles.oneshotAnswerContainer}>
-                                        <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
+                                        <Stack horizontal horizontalAlign="space-between">
+                                            <Answer
+                                                answer={answer[0]}
+                                                isSpeaking={isSpeaking}
+                                                onCitationClicked={x => onShowCitation(x)}
+                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
+                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
+                                                onFollowupQuestionClicked={q => makeApiRequest(q)}
+                                                showFollowupQuestions={useSuggestFollowupQuestions}
+                                                onSpeechSynthesisClicked={() => isSpeaking ? stopSynthesis() : startSynthesis("Answer", answer[1])}
+                                            />
+                                        </Stack>
                                     </div>
-                                ) : null}
-                                {activeAnalysisPanelTab && answer && (
-                                    <AnalysisPanel
-                                        className={styles.oneshotAnalysisPanel}
-                                        activeCitation={activeCitation}
-                                        onActiveTabChanged={x => onToggleTab(x)}
-                                        citationHeight="600px"
-                                        //answer={answer}
-                                        answer={answer[0]}
-                                        activeTab={activeAnalysisPanelTab}
-                                    />
-                                )}
-                            </div>
-
-                            <Panel
-                                headerText="Configure answer generation"
-                                isOpen={isConfigPanelOpen}
-                                isBlocking={false}
-                                onDismiss={() => setIsConfigPanelOpen(false)}
-                                closeButtonAriaLabel="Close"
-                                onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
-                                isFooterAtBottom={true}
-                            >
-                                <br/>
-                                <div>
-                                    <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>
-                                    <Dropdown
-                                        selectedKey={selectedItem ? selectedItem.key : undefined}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onChange={onChange}
-                                        placeholder="Select an PDF"
-                                        options={options}
-                                        styles={dropdownStyles}
-                                    />
-                                    <Label className={styles.commandsContainer}>Index Type : {selectedIndex}</Label>
                                 </div>
-                                <br/>
-                                <div>
-                                    <Label>LLM Model</Label>
-                                    <Dropdown
-                                        selectedKey={selectedEmbeddingItem ? selectedEmbeddingItem.key : undefined}
-                                        onChange={onEmbeddingChange}
-                                        defaultSelectedKey="azureopenai"
-                                        placeholder="Select an LLM Model"
-                                        options={embeddingOptions}
-                                        disabled={false}
-                                        styles={dropdownStyles}
-                                    />
+                            )}
+                            {error ? (
+                                <div className={styles.oneshotAnswerContainer}>
+                                    <AnswerError error={error.toString()} onRetry={() => makeApiRequest(lastQuestionRef.current)} />
                                 </div>
-                                <ChoiceGroup
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Approach"
-                                    options={approaches}
-                                    defaultSelectedKey={approach}
-                                    onChange={onApproachChange}
+                            ) : null}
+                            {activeAnalysisPanelTab && answer && (
+                                <AnalysisPanel
+                                    className={styles.oneshotAnalysisPanel}
+                                    activeCitation={activeCitation}
+                                    onActiveTabChanged={x => onToggleTab(x)}
+                                    citationHeight="600px"
+                                    //answer={answer}
+                                    answer={answer[0]}
+                                    activeTab={activeAnalysisPanelTab}
                                 />
+                            )}
+                        </div>
 
-                                {(approach === Approaches.RetrieveThenRead || approach === Approaches.ReadDecomposeAsk) && (
-                                    <TextField
-                                        className={styles.oneshotSettingsSeparator}
-                                        defaultValue={promptTemplate}
-                                        label="Override prompt template"
-                                        multiline
-                                        autoAdjustHeight
-                                        onChange={onPromptTemplateChange}
-                                    />
-                                )}
-
-                                {approach === Approaches.ReadRetrieveRead && (
-                                    <>
-                                        <TextField
-                                            className={styles.oneshotSettingsSeparator}
-                                            defaultValue={promptTemplatePrefix}
-                                            label="Override prompt prefix template"
-                                            multiline
-                                            autoAdjustHeight
-                                            onChange={onPromptTemplatePrefixChange}
-                                        />
-                                        <TextField
-                                            className={styles.oneshotSettingsSeparator}
-                                            defaultValue={promptTemplateSuffix}
-                                            label="Override prompt suffix template"
-                                            multiline
-                                            autoAdjustHeight
-                                            onChange={onPromptTemplateSuffixChange}
-                                        />
-                                    </>
-                                )}
-
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Retrieve this many documents from search:"
-                                    min={1}
-                                    max={7}
-                                    defaultValue={retrieveCount.toString()}
-                                    onChange={onRetrieveCountChange}
-                                />
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Set the Temperature:"
-                                    min={0.0}
-                                    max={1.0}
-                                    defaultValue={temperature.toString()}
-                                    onChange={onTemperatureChange}
-                                />
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Max Length (Tokens):"
-                                    min={0}
-                                    max={4000}
-                                    defaultValue={tokenLength.toString()}
-                                    onChange={onTokenLengthChange}
-                                />
-                                <Dropdown 
-                                    label="Chain Type"
-                                    onChange={onChainChange}
-                                    selectedKey={selectedChain ? selectedChain.key : 'stuff'}
-                                    options={chainTypeOptions}
-                                    defaultSelectedKey={'stuff'}
+                        <Panel
+                            headerText="Configure answer generation"
+                            isOpen={isConfigPanelOpen}
+                            isBlocking={false}
+                            onDismiss={() => setIsConfigPanelOpen(false)}
+                            closeButtonAriaLabel="Close"
+                            onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
+                            isFooterAtBottom={true}
+                        >
+                            <br />
+                            <div>
+                                <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>
+                                <Dropdown
+                                    selectedKey={selectedItem ? selectedItem.key : undefined}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onChange={onChange}
+                                    placeholder="Select an PDF"
+                                    options={options}
                                     styles={dropdownStyles}
                                 />
-                                <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useSuggestFollowupQuestions}
-                                    label="Suggest follow-up questions"
-                                    onChange={onUseSuggestFollowupQuestionsChange}
+                                <Label className={styles.commandsContainer}>Index Type : {selectedIndex}</Label>
+                            </div>
+                            <br />
+                            <div>
+                                <Label>LLM Model</Label>
+                                <Dropdown
+                                    selectedKey={selectedEmbeddingItem ? selectedEmbeddingItem.key : undefined}
+                                    onChange={onEmbeddingChange}
+                                    defaultSelectedKey="azureopenai"
+                                    placeholder="Select an LLM Model"
+                                    options={embeddingOptions}
+                                    disabled={false}
+                                    styles={dropdownStyles}
                                 />
-                                <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useAutoSpeakAnswers}
-                                    label="Automatically speak answers"
-                                    onChange={onEnableAutoSpeakAnswersChange}
+                            </div>
+                            <ChoiceGroup
+                                className={styles.oneshotSettingsSeparator}
+                                label="Approach"
+                                options={approaches}
+                                defaultSelectedKey={approach}
+                                onChange={onApproachChange}
+                            />
+
+                            {(approach === Approaches.RetrieveThenRead || approach === Approaches.ReadDecomposeAsk) && (
+                                <TextField
+                                    className={styles.oneshotSettingsSeparator}
+                                    defaultValue={promptTemplate}
+                                    label="Override prompt template"
+                                    multiline
+                                    autoAdjustHeight
+                                    onChange={onPromptTemplateChange}
                                 />
-                                <br/>
-                                <DefaultButton onClick={() => refreshSummary('summary')}>Regenerate Summary</DefaultButton>
-                                <DefaultButton onClick={() => refreshSummary('qa')}>Regenerate Qa</DefaultButton>
-                            </Panel>
+                            )}
+
+                            {approach === Approaches.ReadRetrieveRead && (
+                                <>
+                                    <TextField
+                                        className={styles.oneshotSettingsSeparator}
+                                        defaultValue={promptTemplatePrefix}
+                                        label="Override prompt prefix template"
+                                        multiline
+                                        autoAdjustHeight
+                                        onChange={onPromptTemplatePrefixChange}
+                                    />
+                                    <TextField
+                                        className={styles.oneshotSettingsSeparator}
+                                        defaultValue={promptTemplateSuffix}
+                                        label="Override prompt suffix template"
+                                        multiline
+                                        autoAdjustHeight
+                                        onChange={onPromptTemplateSuffixChange}
+                                    />
+                                </>
+                            )}
+
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Retrieve this many documents from search:"
+                                min={1}
+                                max={7}
+                                defaultValue={retrieveCount.toString()}
+                                onChange={onRetrieveCountChange}
+                            />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Set the Temperature:"
+                                min={0.0}
+                                max={1.0}
+                                defaultValue={temperature.toString()}
+                                onChange={onTemperatureChange}
+                            />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Max Length (Tokens):"
+                                min={0}
+                                max={4000}
+                                defaultValue={tokenLength.toString()}
+                                onChange={onTokenLengthChange}
+                            />
+                            <Dropdown
+                                label="Chain Type"
+                                onChange={onChainChange}
+                                selectedKey={selectedChain ? selectedChain.key : 'stuff'}
+                                options={chainTypeOptions}
+                                defaultSelectedKey={'stuff'}
+                                styles={dropdownStyles}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useSuggestFollowupQuestions}
+                                label="Suggest follow-up questions"
+                                onChange={onUseSuggestFollowupQuestionsChange}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useAutoSpeakAnswers}
+                                label="Automatically speak answers"
+                                onChange={onEnableAutoSpeakAnswersChange}
+                            />
+                            <br />
+                            <DefaultButton onClick={() => refreshSummary('summary')}>Regenerate Summary</DefaultButton>
+                            <DefaultButton onClick={() => refreshSummary('qa')}>Regenerate Qa</DefaultButton>
+                        </Panel>
                     </PivotItem>
                     <PivotItem
                         headerText="Agent QA"
                         headerButtonProps={{
-                        'data-order': 2,
+                            'data-order': 2,
                         }}
                     >
-                            <div className={styles.oneshotTopSection}>
-                                <div className={styles.commandsContainer}>
-                                    <ClearChatButton className={styles.settingsButton} onClick={clearAgentChat} disabled={!lastAgentQuestionRef.current || isLoading} />
-                                    <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                                </div>
-                                <div className={styles.commandsContainer}>
+                        <div className={styles.oneshotTopSection}>
+                            <div className={styles.commandsContainer}>
+                                <ClearChatButton className={styles.settingsButton} onClick={clearAgentChat} disabled={!lastAgentQuestionRef.current || isLoading} />
+                                <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
+                            </div>
+                            <div className={styles.commandsContainer}>
                                 <Stack enableScopedSelectors tokens={outerStackTokens}>
-                                    <Stack enableScopedSelectors  tokens={innerStackTokens}>
+                                    <Stack enableScopedSelectors tokens={innerStackTokens}>
                                         <Stack.Item grow styles={stackItemStyles}>
                                             <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>&nbsp;
                                             <Label>Index Type</Label>
@@ -863,124 +861,124 @@ const OneShot = () => {
                                         </Stack.Item>
                                     </Stack>
                                 </Stack>
-                                </div>                      
-                                <h1 className={styles.oneshotTitle}>Ask your data</h1>
-                                <div className={styles.example}>
-                                    <p className={styles.fullText}><b>Document Summary</b> : {agentSummary}</p>
-                                </div>
-                                <br/>
-                                <div className={styles.oneshotQuestionInput}>
-                                    <QuestionInput
-                                        placeholder="Ask me anything"
-                                        disabled={isLoading}
-                                        updateQuestion={lastAgentQuestionRef.current}
-                                        onSend={question => makeApiAgentRequest(question)}
-                                    />
-                                </div>
-                                <div className={styles.chatContainer}>
-                                </div>    
                             </div>
-                            <div className={styles.oneshotBottomSection}>
-                                {isLoading && <Spinner label="Generating answer" />}
-                                {!isLoading && answerAgent && !errorAgent && (
-                                    <div>
-                                        <div className={styles.oneshotAnswerContainer}>
-                                            <Stack horizontal horizontalAlign="space-between">
-                                                <Answer
-                                                    //answer={answerAgent}
-                                                    answer={answerAgent[0]}
-                                                    isSpeaking = {isSpeaking}
-                                                    onCitationClicked={x => onShowCitation(x)}
-                                                    onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
-                                                    onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
-                                                    onFollowupQuestionClicked={q => makeApiAgentRequest(q)}
-                                                    showFollowupQuestions={useSuggestFollowupQuestions}
-                                                    onSpeechSynthesisClicked={() => isSpeaking? stopSynthesis(): startSynthesis("AnswerAgent", answerAgent[1])}
-                                                />
-                                            </Stack>                               
-                                        </div>
-                                    </div>
-                                )}
-                                {error ? (
+                            <h1 className={styles.oneshotTitle}>Ask your data</h1>
+                            <div className={styles.example}>
+                                <p className={styles.fullText}><b>Document Summary</b> : {agentSummary}</p>
+                            </div>
+                            <br />
+                            <div className={styles.oneshotQuestionInput}>
+                                <QuestionInput
+                                    placeholder="Ask me anything"
+                                    disabled={isLoading}
+                                    updateQuestion={lastAgentQuestionRef.current}
+                                    onSend={question => makeApiAgentRequest(question)}
+                                />
+                            </div>
+                            <div className={styles.chatContainer}>
+                            </div>
+                        </div>
+                        <div className={styles.oneshotBottomSection}>
+                            {isLoading && <Spinner label="Generating answer" />}
+                            {!isLoading && answerAgent && !errorAgent && (
+                                <div>
                                     <div className={styles.oneshotAnswerContainer}>
-                                        <AnswerError error={error.toString()} onRetry={() => makeApiAgentRequest(lastAgentQuestionRef.current)} />
+                                        <Stack horizontal horizontalAlign="space-between">
+                                            <Answer
+                                                //answer={answerAgent}
+                                                answer={answerAgent[0]}
+                                                isSpeaking={isSpeaking}
+                                                onCitationClicked={x => onShowCitation(x)}
+                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
+                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
+                                                onFollowupQuestionClicked={q => makeApiAgentRequest(q)}
+                                                showFollowupQuestions={useSuggestFollowupQuestions}
+                                                onSpeechSynthesisClicked={() => isSpeaking ? stopSynthesis() : startSynthesis("AnswerAgent", answerAgent[1])}
+                                            />
+                                        </Stack>
                                     </div>
-                                ) : null}
-                                {activeAnalysisPanelTab && answerAgent && (
-                                    <AnalysisPanel
-                                        className={styles.oneshotAnalysisPanel}
-                                        activeCitation={activeCitation}
-                                        onActiveTabChanged={x => onToggleTab(x)}
-                                        citationHeight="600px"
-                                        //answer={answerAgent}
-                                        answer={answerAgent[0]}
-                                        activeTab={activeAnalysisPanelTab}
-                                    />
-                                )}
-                            </div>
+                                </div>
+                            )}
+                            {error ? (
+                                <div className={styles.oneshotAnswerContainer}>
+                                    <AnswerError error={error.toString()} onRetry={() => makeApiAgentRequest(lastAgentQuestionRef.current)} />
+                                </div>
+                            ) : null}
+                            {activeAnalysisPanelTab && answerAgent && (
+                                <AnalysisPanel
+                                    className={styles.oneshotAnalysisPanel}
+                                    activeCitation={activeCitation}
+                                    onActiveTabChanged={x => onToggleTab(x)}
+                                    citationHeight="600px"
+                                    //answer={answerAgent}
+                                    answer={answerAgent[0]}
+                                    activeTab={activeAnalysisPanelTab}
+                                />
+                            )}
+                        </div>
 
-                            <Panel
-                                headerText="Configure answer generation"
-                                isOpen={isConfigPanelOpen}
-                                isBlocking={false}
-                                onDismiss={() => setIsConfigPanelOpen(false)}
-                                closeButtonAriaLabel="Close"
-                                onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
-                                isFooterAtBottom={true}
-                            >
-                                <br/>
-                                 <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Set the Temperature:"
-                                    min={0.0}
-                                    max={1.0}
-                                    defaultValue={temperature.toString()}
-                                    onChange={onTemperatureChange}
-                                />
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Max Length (Tokens):"
-                                    min={0}
-                                    max={4000}
-                                    defaultValue={tokenLength.toString()}
-                                    onChange={onTokenLengthChange}
-                                />
-                                <Dropdown 
-                                    label="Chain Type"
-                                    onChange={onChainChange}
-                                    selectedKey={selectedChain ? selectedChain.key : 'stuff'}
-                                    options={chainTypeOptions}
-                                    defaultSelectedKey={'stuff'}
-                                    styles={dropdownStyles}
-                                />
-                                <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useSuggestFollowupQuestions}
-                                    label="Suggest follow-up questions"
-                                    onChange={onUseSuggestFollowupQuestionsChange}
-                                />
-                                 <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useAutoSpeakAnswers}
-                                    label="Automatically speak answers"
-                                    onChange={onEnableAutoSpeakAnswersChange}
-                                />
-                            </Panel>
-                        </PivotItem>
-                        <PivotItem
+                        <Panel
+                            headerText="Configure answer generation"
+                            isOpen={isConfigPanelOpen}
+                            isBlocking={false}
+                            onDismiss={() => setIsConfigPanelOpen(false)}
+                            closeButtonAriaLabel="Close"
+                            onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
+                            isFooterAtBottom={true}
+                        >
+                            <br />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Set the Temperature:"
+                                min={0.0}
+                                max={1.0}
+                                defaultValue={temperature.toString()}
+                                onChange={onTemperatureChange}
+                            />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Max Length (Tokens):"
+                                min={0}
+                                max={4000}
+                                defaultValue={tokenLength.toString()}
+                                onChange={onTokenLengthChange}
+                            />
+                            <Dropdown
+                                label="Chain Type"
+                                onChange={onChainChange}
+                                selectedKey={selectedChain ? selectedChain.key : 'stuff'}
+                                options={chainTypeOptions}
+                                defaultSelectedKey={'stuff'}
+                                styles={dropdownStyles}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useSuggestFollowupQuestions}
+                                label="Suggest follow-up questions"
+                                onChange={onUseSuggestFollowupQuestionsChange}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useAutoSpeakAnswers}
+                                label="Automatically speak answers"
+                                onChange={onEnableAutoSpeakAnswersChange}
+                            />
+                        </Panel>
+                    </PivotItem>
+                    <PivotItem
                         headerText="Task Agent QA"
                         headerButtonProps={{
-                        'data-order': 2,
+                            'data-order': 2,
                         }}
                     >
-                            <div className={styles.oneshotTopSection}>
-                                <div className={styles.commandsContainer}>
-                                    <ClearChatButton className={styles.settingsButton} onClick={clearTaskAgentChat} disabled={!lastTaskAgentQuestionRef.current || isLoading} />
-                                    <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                                </div>
-                                <div className={styles.commandsContainer}>
+                        <div className={styles.oneshotTopSection}>
+                            <div className={styles.commandsContainer}>
+                                <ClearChatButton className={styles.settingsButton} onClick={clearTaskAgentChat} disabled={!lastTaskAgentQuestionRef.current || isLoading} />
+                                <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
+                            </div>
+                            <div className={styles.commandsContainer}>
                                 <Stack enableScopedSelectors tokens={outerStackTokens}>
-                                    <Stack enableScopedSelectors  tokens={innerStackTokens}>
+                                    <Stack enableScopedSelectors tokens={innerStackTokens}>
                                         <Stack.Item grow styles={stackItemStyles}>
                                             <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>&nbsp;
                                             <Label>Index Type</Label>
@@ -1019,116 +1017,116 @@ const OneShot = () => {
                                         </Stack.Item>
                                     </Stack>
                                 </Stack>
-                                </div>                      
-                                <h1 className={styles.oneshotTitle}>Task your data</h1>
-                                <div className={styles.example}>
-                                    <p className={styles.fullText}><b>Document Summary</b> : {taskAgentSummary}</p>
-                                </div>
-                                <br/>
-                                <div className={styles.oneshotQuestionInput}>
-                                    <QuestionInput
-                                        placeholder="Ask me anything"
-                                        disabled={isLoading}
-                                        updateQuestion={lastTaskAgentQuestionRef.current}
-                                        onSend={question => makeApiTaskAgentRequest(question)}
-                                    />
-                                </div>
-                                <div className={styles.chatContainer}>
-                                </div>    
                             </div>
-                            <div className={styles.oneshotBottomSection}>
-                                {isLoading && <Spinner label="Generating answer" />}
-                                {!isLoading && answerTaskAgent && !errorTaskAgent && (
-                                    <div>
-                                        <div className={styles.oneshotAnswerContainer}>
-                                            <Stack horizontal horizontalAlign="space-between">
-                                                <Answer
-                                                    answer={answerTaskAgent[0]}
-                                                    isSpeaking = {isSpeaking}
-                                                    onCitationClicked={x => onShowCitation(x)}
-                                                    onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
-                                                    onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
-                                                    onFollowupQuestionClicked={q => makeApiTaskAgentRequest(q)}
-                                                    showFollowupQuestions={useSuggestFollowupQuestions}
-                                                    onSpeechSynthesisClicked={() => isSpeaking? stopSynthesis(): startSynthesis("AnswerTaskAgent", answerTaskAgent[1])}
-                                                />
-                                            </Stack>                               
-                                        </div>
-                                    </div>
-                                )}
-                                {error ? (
+                            <h1 className={styles.oneshotTitle}>Task your data</h1>
+                            <div className={styles.example}>
+                                <p className={styles.fullText}><b>Document Summary</b> : {taskAgentSummary}</p>
+                            </div>
+                            <br />
+                            <div className={styles.oneshotQuestionInput}>
+                                <QuestionInput
+                                    placeholder="Ask me anything"
+                                    disabled={isLoading}
+                                    updateQuestion={lastTaskAgentQuestionRef.current}
+                                    onSend={question => makeApiTaskAgentRequest(question)}
+                                />
+                            </div>
+                            <div className={styles.chatContainer}>
+                            </div>
+                        </div>
+                        <div className={styles.oneshotBottomSection}>
+                            {isLoading && <Spinner label="Generating answer" />}
+                            {!isLoading && answerTaskAgent && !errorTaskAgent && (
+                                <div>
                                     <div className={styles.oneshotAnswerContainer}>
-                                        <AnswerError error={error.toString()} onRetry={() => makeApiTaskAgentRequest(lastTaskAgentQuestionRef.current)} />
+                                        <Stack horizontal horizontalAlign="space-between">
+                                            <Answer
+                                                answer={answerTaskAgent[0]}
+                                                isSpeaking={isSpeaking}
+                                                onCitationClicked={x => onShowCitation(x)}
+                                                onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
+                                                onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
+                                                onFollowupQuestionClicked={q => makeApiTaskAgentRequest(q)}
+                                                showFollowupQuestions={useSuggestFollowupQuestions}
+                                                onSpeechSynthesisClicked={() => isSpeaking ? stopSynthesis() : startSynthesis("AnswerTaskAgent", answerTaskAgent[1])}
+                                            />
+                                        </Stack>
                                     </div>
-                                ) : null}
-                                {activeAnalysisPanelTab && answerTaskAgent && (
-                                    <AnalysisPanel
-                                        className={styles.oneshotAnalysisPanel}
-                                        activeCitation={activeCitation}
-                                        onActiveTabChanged={x => onToggleTab(x)}
-                                        citationHeight="600px"
-                                        answer={answerTaskAgent[0]}
-                                        activeTab={activeAnalysisPanelTab}
-                                    />
-                                )}
-                            </div>
+                                </div>
+                            )}
+                            {error ? (
+                                <div className={styles.oneshotAnswerContainer}>
+                                    <AnswerError error={error.toString()} onRetry={() => makeApiTaskAgentRequest(lastTaskAgentQuestionRef.current)} />
+                                </div>
+                            ) : null}
+                            {activeAnalysisPanelTab && answerTaskAgent && (
+                                <AnalysisPanel
+                                    className={styles.oneshotAnalysisPanel}
+                                    activeCitation={activeCitation}
+                                    onActiveTabChanged={x => onToggleTab(x)}
+                                    citationHeight="600px"
+                                    answer={answerTaskAgent[0]}
+                                    activeTab={activeAnalysisPanelTab}
+                                />
+                            )}
+                        </div>
 
-                            <Panel
-                                headerText="Configure answer generation"
-                                isOpen={isConfigPanelOpen}
-                                isBlocking={false}
-                                onDismiss={() => setIsConfigPanelOpen(false)}
-                                closeButtonAriaLabel="Close"
-                                onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
-                                isFooterAtBottom={true}
-                            >
-                                <br/>
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Maximum number of Task Iterations:"
-                                    min={1}
-                                    max={5}
-                                    defaultValue={retrieveCount.toString()}
-                                    onChange={onRetrieveCountChange}
-                                />
-                                 <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Set the Temperature:"
-                                    min={0.0}
-                                    max={1.0}
-                                    defaultValue={temperature.toString()}
-                                    onChange={onTemperatureChange}
-                                />
-                                <SpinButton
-                                    className={styles.oneshotSettingsSeparator}
-                                    label="Max Length (Tokens):"
-                                    min={0}
-                                    max={4000}
-                                    defaultValue={tokenLength.toString()}
-                                    onChange={onTokenLengthChange}
-                                />
-                                <Dropdown 
-                                    label="Chain Type"
-                                    onChange={onChainChange}
-                                    selectedKey={selectedChain ? selectedChain.key : 'stuff'}
-                                    options={chainTypeOptions}
-                                    defaultSelectedKey={'stuff'}
-                                    styles={dropdownStyles}
-                                />
-                                <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useSuggestFollowupQuestions}
-                                    label="Suggest follow-up questions"
-                                    onChange={onUseSuggestFollowupQuestionsChange}
-                                />
-                                 <Checkbox
-                                    className={styles.chatSettingsSeparator}
-                                    checked={useAutoSpeakAnswers}
-                                    label="Automatically speak answers"
-                                    onChange={onEnableAutoSpeakAnswersChange}
-                                />
-                            </Panel>
-                        </PivotItem>
+                        <Panel
+                            headerText="Configure answer generation"
+                            isOpen={isConfigPanelOpen}
+                            isBlocking={false}
+                            onDismiss={() => setIsConfigPanelOpen(false)}
+                            closeButtonAriaLabel="Close"
+                            onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
+                            isFooterAtBottom={true}
+                        >
+                            <br />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Maximum number of Task Iterations:"
+                                min={1}
+                                max={5}
+                                defaultValue={retrieveCount.toString()}
+                                onChange={onRetrieveCountChange}
+                            />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Set the Temperature:"
+                                min={0.0}
+                                max={1.0}
+                                defaultValue={temperature.toString()}
+                                onChange={onTemperatureChange}
+                            />
+                            <SpinButton
+                                className={styles.oneshotSettingsSeparator}
+                                label="Max Length (Tokens):"
+                                min={0}
+                                max={4000}
+                                defaultValue={tokenLength.toString()}
+                                onChange={onTokenLengthChange}
+                            />
+                            <Dropdown
+                                label="Chain Type"
+                                onChange={onChainChange}
+                                selectedKey={selectedChain ? selectedChain.key : 'stuff'}
+                                options={chainTypeOptions}
+                                defaultSelectedKey={'stuff'}
+                                styles={dropdownStyles}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useSuggestFollowupQuestions}
+                                label="Suggest follow-up questions"
+                                onChange={onUseSuggestFollowupQuestionsChange}
+                            />
+                            <Checkbox
+                                className={styles.chatSettingsSeparator}
+                                checked={useAutoSpeakAnswers}
+                                label="Automatically speak answers"
+                                onChange={onEnableAutoSpeakAnswersChange}
+                            />
+                        </Panel>
+                    </PivotItem>
                 </Pivot>
             </div>
         </div>

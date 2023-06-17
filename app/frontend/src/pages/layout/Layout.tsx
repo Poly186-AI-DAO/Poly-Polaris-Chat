@@ -35,8 +35,8 @@ const Layout = () => {
         <div className={styles.layout}>
             <header className={styles.header} role={"banner"}>
                 <div className={styles.headerContainer}>
-                    <Link to="https://dataaipdfchat.azurewebsites.net/" target="_blank" className={styles.headerTitleContainer}>
-                        <img src="/poly186_logo.png" alt="Poly Chat Logo" className={styles.logoImage} />
+                    <Link to="https://polychatapp.azurewebsites.net/" target="_blank" className={styles.headerTitleContainer}>
+                        <img src="/poly186_logo.png" alt="Poly Chat Logo" className={styles.logoImage} style={{ width: "20px", height: "20px" }} />
                     </Link>
                     <nav>
                         <ul className={styles.headerNavList}>

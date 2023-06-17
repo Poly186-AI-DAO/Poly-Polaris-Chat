@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle} from "@fluentui/react";
+import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinner, TextField, SpinButton, Stack, IPivotItemProps, getFadedOverflowStyle } from "@fluentui/react";
 
 import styles from "./SmartAgent.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
@@ -39,7 +39,7 @@ const SmartAgent = () => {
     const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<AnalysisPanelTabs | undefined>(undefined);
     const [selectedChain, setSelectedChain] = useState<IDropdownOption>();
 
-    const [exampleList, setExampleList] = useState<ExampleModel[]>([{text:'', value: ''}]);
+    const [exampleList, setExampleList] = useState<ExampleModel[]>([{ text: '', value: '' }]);
     const [agentSummary, setAgentSummary] = useState<string>();
     const [chainTypeOptions, setChainTypeOptions] = useState<any>([])
 
@@ -48,12 +48,12 @@ const SmartAgent = () => {
 
     const embeddingOptions = [
         {
-          key: 'azureopenai',
-          text: 'Azure Open AI'
+            key: 'openai',
+            text: 'Open AI'
         },
         {
-          key: 'openai',
-          text: 'Open AI'
+            key: 'azureopenai',
+            text: 'Azure Open AI'
         }
         // {
         //   key: 'local',
@@ -62,27 +62,27 @@ const SmartAgent = () => {
     ]
 
     const stackItemStyles: IStackItemStyles = {
-    root: {
-        alignItems: 'left',
-        // background: DefaultPalette.white,
-        // color: DefaultPalette.white,
-        display: 'flex',
-        justifyContent: 'left',
-    },
+        root: {
+            alignItems: 'left',
+            // background: DefaultPalette.white,
+            // color: DefaultPalette.white,
+            display: 'flex',
+            justifyContent: 'left',
+        },
     };
 
-     // Tokens definition
-     const outerStackTokens: IStackTokens = { childrenGap: 5 };
-     const innerStackTokens: IStackTokens = {
-       childrenGap: 5,
-       padding: 10,
+    // Tokens definition
+    const outerStackTokens: IStackTokens = { childrenGap: 5 };
+    const innerStackTokens: IStackTokens = {
+        childrenGap: 5,
+        padding: 10,
     };
 
     const chainType = [
-        { key: 'stuff', text: 'Stuff'},
+        { key: 'stuff', text: 'Stuff' },
         { key: 'map_rerank', text: 'Map ReRank' },
         { key: 'map_reduce', text: 'Map Reduce' },
-        { key: 'refine', text: 'Refine'},
+        { key: 'refine', text: 'Refine' },
     ]
 
     const makeApiAgentRequest = async (question: string) => {
@@ -108,7 +108,7 @@ const SmartAgent = () => {
             };
             const result = await smartAgent(request);
             setAgentAnswer([result, null]);
-            if(useAutoSpeakAnswers) {
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setAgentAnswer([result, speechUrl]);
                 startSynthesis("SmartAgent", speechUrl);
@@ -129,12 +129,12 @@ const SmartAgent = () => {
     ];
 
     const startSynthesis = async (answerType: string, url: string | null) => {
-        if(isSpeaking) {
+        if (isSpeaking) {
             audio.pause();
             setIsSpeaking(false);
         }
 
-        if(url === null) {
+        if (url === null) {
             let speechAnswer;
             speechAnswer = answerAgent && answerAgent[0].answer;
             const speechUrl = await getSpeechApi(speechAnswer || '');
@@ -154,7 +154,7 @@ const SmartAgent = () => {
             setIsSpeaking(true);
             audio.addEventListener('ended', () => {
                 setIsSpeaking(false);
-            });    
+            });
         }
     };
 
@@ -214,7 +214,7 @@ const SmartAgent = () => {
 
     const documentSummaryAndQa = async () => {
         const sampleQuestion = []
-        const  questionList = [] 
+        const questionList = []
         questionList.push("Should I create one or multiple Purview accounts and why?")
         questionList.push("Which shippers can ship the orders?")
         questionList.push("What is the difference between Serverless and Dedicated Pool")
@@ -244,16 +244,16 @@ const SmartAgent = () => {
                     text: item,
                     value: item,
                 })
-            } 
+            }
         }
         const generatedExamples: ExampleModel[] = sampleQuestion
         setExampleList(generatedExamples)
 
         setAgentSummary("This sample shows how we can build Agents that uses set of tools and then get the answer.  The goal is that regardless of the information that we" +
-        " have stored here (Cognitive Search, Cognitive Search Vector Store, Pinecone, Redis or any other document store) or processing the data" + 
-        " that is in CSV format (and using CSV Agent or Pandas Agent) or retrieving information from Database (SQL Agent), the Agent can" +
-        " answer the question correctly using the right tool.  Beyond the data that is stored in here, the Agent can also use the tool" + 
-        " to find the current event and information from the web (using Bing Search Agent) and then answer the question.")
+            " have stored here (Cognitive Search, Cognitive Search Vector Store, Pinecone, Redis or any other document store) or processing the data" +
+            " that is in CSV format (and using CSV Agent or Pandas Agent) or retrieving information from Database (SQL Agent), the Agent can" +
+            " answer the question correctly using the right tool.  Beyond the data that is stored in here, the Agent can also use the tool" +
+            " to find the current event and information from the web (using Bing Search Agent) and then answer the question.")
     }
 
     useEffect(() => {
@@ -276,11 +276,11 @@ const SmartAgent = () => {
 
         <div className={styles.root}>
             <div className={styles.oneshotContainer}>
-            <Pivot aria-label="QA">
+                <Pivot aria-label="QA">
                     <PivotItem
                         headerText="Smart Agent"
                         headerButtonProps={{
-                        'data-order': 2,
+                            'data-order': 2,
                         }}>
                         <div className={styles.oneshotTopSection}>
                             <div className={styles.commandsContainer}>
@@ -288,32 +288,32 @@ const SmartAgent = () => {
                                 <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                             </div>
                             <div className={styles.commandsContainer}>
-                            <Stack enableScopedSelectors tokens={outerStackTokens}>
-                                <Stack enableScopedSelectors  tokens={innerStackTokens}>
-                                    <Stack.Item grow styles={stackItemStyles}>
-                                        &nbsp;
-                                        <Label>LLM Model</Label>
-                                        &nbsp;
-                                        <Dropdown
-                                            selectedKey={selectedEmbeddingItem ? selectedEmbeddingItem.key : undefined}
-                                            onChange={onEmbeddingChange}
-                                            defaultSelectedKey="azureopenai"
-                                            placeholder="Select an LLM Model"
-                                            options={embeddingOptions}
-                                            disabled={false}
-                                            styles={dropdownStyles}
-                                        />
-                                    </Stack.Item>
-                                    <Stack.Item grow styles={stackItemStyles}>
-                                    </Stack.Item>
+                                <Stack enableScopedSelectors tokens={outerStackTokens}>
+                                    <Stack enableScopedSelectors tokens={innerStackTokens}>
+                                        <Stack.Item grow styles={stackItemStyles}>
+                                            &nbsp;
+                                            <Label>LLM Model</Label>
+                                            &nbsp;
+                                            <Dropdown
+                                                selectedKey={selectedEmbeddingItem ? selectedEmbeddingItem.key : undefined}
+                                                onChange={onEmbeddingChange}
+                                                defaultSelectedKey="azureopenai"
+                                                placeholder="Select an LLM Model"
+                                                options={embeddingOptions}
+                                                disabled={false}
+                                                styles={dropdownStyles}
+                                            />
+                                        </Stack.Item>
+                                        <Stack.Item grow styles={stackItemStyles}>
+                                        </Stack.Item>
+                                    </Stack>
                                 </Stack>
-                            </Stack>
-                            </div>                      
+                            </div>
                             <h1 className={styles.oneshotTitle}>Ask your Agent</h1>
                             <div className={styles.example}>
                                 <p className={styles.fullText}><b>Document Summary</b> : {agentSummary}</p>
                             </div>
-                            <br/>
+                            <br />
                             <div className={styles.oneshotQuestionInput}>
                                 <QuestionInput
                                     placeholder="Ask me anything"
@@ -326,8 +326,8 @@ const SmartAgent = () => {
                                 <ExampleList onExampleClicked={onExampleClicked}
                                     EXAMPLES={
                                         exampleList
-                                } />
-                            </div>    
+                                    } />
+                            </div>
                         </div>
                         <div className={styles.oneshotBottomSection}>
                             {isLoading && <Spinner label="Generating answer" />}
@@ -338,15 +338,15 @@ const SmartAgent = () => {
                                             <Answer
                                                 //answer={answerAgent}
                                                 answer={answerAgent[0]}
-                                                isSpeaking = {isSpeaking}
+                                                isSpeaking={isSpeaking}
                                                 onCitationClicked={x => onShowCitation(x)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
                                                 onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
                                                 onFollowupQuestionClicked={q => makeApiAgentRequest(q)}
                                                 showFollowupQuestions={useSuggestFollowupQuestions}
-                                                onSpeechSynthesisClicked={() => isSpeaking? stopSynthesis(): startSynthesis("AnswerAgent", answerAgent[1])}
+                                                onSpeechSynthesisClicked={() => isSpeaking ? stopSynthesis() : startSynthesis("AnswerAgent", answerAgent[1])}
                                             />
-                                        </Stack>                               
+                                        </Stack>
                                     </div>
                                 </div>
                             )}
@@ -377,8 +377,8 @@ const SmartAgent = () => {
                             onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                             isFooterAtBottom={true}
                         >
-                            <br/>
-                                <SpinButton
+                            <br />
+                            <SpinButton
                                 className={styles.oneshotSettingsSeparator}
                                 label="Set the Temperature:"
                                 min={0.0}
@@ -394,7 +394,7 @@ const SmartAgent = () => {
                                 defaultValue={tokenLength.toString()}
                                 onChange={onTokenLengthChange}
                             />
-                            <Dropdown 
+                            <Dropdown
                                 label="Chain Type"
                                 onChange={onChainChange}
                                 selectedKey={selectedChain ? selectedChain.key : 'stuff'}
@@ -408,7 +408,7 @@ const SmartAgent = () => {
                                 label="Suggest follow-up questions"
                                 onChange={onUseSuggestFollowupQuestionsChange}
                             />
-                                <Checkbox
+                            <Checkbox
                                 className={styles.chatSettingsSeparator}
                                 checked={useAutoSpeakAnswers}
                                 label="Automatically speak answers"
