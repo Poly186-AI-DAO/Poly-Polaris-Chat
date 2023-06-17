@@ -20,10 +20,11 @@
 name: Deploy App
 
 env:
-  AZURE_WEBAPP_NAME: 'polychatapp'
-  PYTHON_VERSION: '3.9'              
-  NODE_VERSION: '16.x'                      
-  AZURE_NODEJS_PACKAGE_PATH: 'app/frontend'
+  AZURE_WEBAPP_NAME: polychatapp  # set this to the name of your Azure Web App
+  PYTHON_VERSION: '3.9'           # set this to the Python version to use
+  NODE_VERSION: '16.x'            # set this to the node version to use (e.g., '8.x', '10.x', '12.x')
+  AZURE_NODEJS_PACKAGE_PATH: 'app/frontend'       # set this to the path to your function app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'app/backend'
 
 on:
   push:
@@ -109,5 +110,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-          scm-do-build-during-deployment: true
-          enable-oryx-build: true
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

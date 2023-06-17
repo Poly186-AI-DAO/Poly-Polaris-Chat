@@ -141,5 +141,7 @@ static/
 config.json
 local.settings.json
 
+#local storage
+.history/
 
-.history
+_next/
