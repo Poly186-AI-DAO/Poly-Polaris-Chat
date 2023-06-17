@@ -25,7 +25,7 @@ var audio = new Audio();
 
 const stackStyles: IStackStyles = {
     root: {
-      //background: DefaultPalette.white,
+        //background: DefaultPalette.white,
     },
 };
 
@@ -52,7 +52,7 @@ const DeveloperTools = () => {
     const [promptSummary, setPromptSummary] = useState<string>();
     const [qa, setQa] = useState<string>('');
     const [exampleLoading, setExampleLoading] = useState(false)
-  
+
     const [inputLanguage, setInputLanguage] = useState<string>('JavaScript');
     const [outputLanguage, setOutputLanguage] = useState<string>('Python');
     const [inputCode, setInputCode] = useState<string>('');
@@ -63,7 +63,7 @@ const DeveloperTools = () => {
     const lastQuestionRef = useRef<string>("");
     const [error, setError] = useState<unknown>();
     const [answer, setAnswer] = useState<[AskResponse, string | null]>();
-    const [exampleList, setExampleList] = useState<ExampleModel[]>([{text:'', value: ''}]);
+    const [exampleList, setExampleList] = useState<ExampleModel[]>([{ text: '', value: '' }]);
     const [gptPrompt, setGptPrompt] = useState('');
     const [gptSummary, setGptSummary] = useState('');
 
@@ -71,12 +71,12 @@ const DeveloperTools = () => {
     const [selectedEmbeddingItem, setSelectedEmbeddingItem] = useState<IDropdownOption>();
     const embeddingOptions = [
         {
-          key: 'azureopenai',
-          text: 'Azure Open AI'
+            key: 'openai',
+            text: 'Open AI'
         },
         {
-          key: 'openai',
-          text: 'Open AI'
+            key: 'azureopenai',
+            text: 'Azure Open AI'
         }
         // {
         //   key: 'local',
@@ -87,12 +87,12 @@ const DeveloperTools = () => {
     const [selectedModelItem, setSelectedModelItem] = useState<IDropdownOption>();
     const modelOptions = [
         {
-          key: 'gpt35',
-          text: 'GPT 3.5'
+            key: 'gpt35',
+            text: 'GPT 3.5'
         },
         {
-          key: 'gpt4',
-          text: 'GPT 4'
+            key: 'gpt4',
+            text: 'GPT 4'
         }
     ]
 
@@ -149,21 +149,21 @@ const DeveloperTools = () => {
 
     const outerStackTokens: IStackTokens = { childrenGap: 5 };
     const innerStackTokens: IStackTokens = {
-      childrenGap: 5,
-      padding: 10,
+        childrenGap: 5,
+        padding: 10,
     };
 
     const stackItemStyles: IStackItemStyles = {
-    root: {
-        alignItems: 'left',
-        display: 'flex',
-        justifyContent: 'left',
-    },
+        root: {
+            alignItems: 'left',
+            display: 'flex',
+            justifyContent: 'left',
+        },
     };
 
     const documentSummaryAndQa = async () => {
         const sampleQuestion = []
-        const  questionList = [] 
+        const questionList = []
         questionList.push("Act as a Linux Terminal")
         questionList.push("Act as an English Translator and Improver")
         questionList.push("Act as position Interviewer")
@@ -190,7 +190,7 @@ const DeveloperTools = () => {
                     text: item,
                     value: item,
                 })
-            } 
+            }
         }
         const generatedExamples: ExampleModel[] = sampleQuestion
         setExampleList(generatedExamples)
@@ -204,15 +204,15 @@ const DeveloperTools = () => {
 
     const onShowCitation = (citation: string) => {
     };
-    
+
     const onToggleTab = (tab: AnalysisPanelTabs) => {
     };
 
     const gptCompletion = async () => {
         const requestText = JSON.stringify(gptPrompt)
-    
+
         setGptSummary('')
-    
+
         const request: AskRequest = {
             question: '',
             approach: Approaches.RetrieveThenRead,
@@ -223,72 +223,72 @@ const DeveloperTools = () => {
             }
         };
 
-        await summarizer(request, requestText, 'custom', '', 'inline', 
-          "map_reduce", String(selectedEmbeddingItem?.key)).then((response) => {
-            setGptSummary(response)
-          }).catch((error) => {
-            console.log(error)
-            setGptSummary(error)
-        }
-        )
+        await summarizer(request, requestText, 'custom', '', 'inline',
+            "map_reduce", String(selectedEmbeddingItem?.key)).then((response) => {
+                setGptSummary(response)
+            }).catch((error) => {
+                console.log(error)
+                setGptSummary(error)
+            }
+            )
     }
 
     const handleTranslate = async () => {
         const maxCodeLength = selectedModelItem?.key === 'gpt35' ? 6000 : 12000;
-        
+
         if (inputLanguage === outputLanguage) {
             setTranslateError(true);
             setTranslateText('Please select different languages.');
             return;
         }
-    
+
         if (!inputCode) {
             setTranslateError(true);
             setTranslateText('Please enter some code.');
             return;
         }
-    
+
         if (inputCode.length > maxCodeLength) {
             setTranslateError(true);
             setTranslateText(
-            `Please enter code less than ${maxCodeLength} characters. You are currently at ${inputCode.length} characters.`,
+                `Please enter code less than ${maxCodeLength} characters. You are currently at ${inputCode.length} characters.`,
             );
-          return;
+            return;
         }
-    
+
         setIsLoading(true);
         setOutputCode('');
         setTranslateText('')
         setTranslateError(false)
-        
+
         await convertCode(inputLanguage, outputLanguage, inputCode, selectedModelItem?.key as string, selectedEmbeddingItem?.key as string)
-          .then((response:string) => {
-            if (response.length > 0) {
-                setOutputCode(response)
+            .then((response: string) => {
+                if (response.length > 0) {
+                    setOutputCode(response)
+                    setIsLoading(false)
+                    setTranslateText("Completed Successfully.")
+                }
+                else {
+                    setTranslateText(response)
+                }
                 setIsLoading(false)
-                setTranslateText("Completed Successfully.")
-            }
-            else {
-                setTranslateText(response)
-            }
-            setIsLoading(false)
-          })
-          .catch((error : string) => {
-            setTranslateError(true)
-            setTranslateText(error)
-            setIsLoading(false)
-        })
+            })
+            .catch((error: string) => {
+                setTranslateError(true)
+                setTranslateText(error)
+                setIsLoading(false)
+            })
         setIsLoading(false);
         setHasTranslated(true);
     };
 
     const startSynthesis = async (answerType: string, url: string | null) => {
-        if(isSpeaking) {
+        if (isSpeaking) {
             audio.pause();
             setIsSpeaking(false);
         }
 
-        if(url === null) {
+        if (url === null) {
             let speechAnswer;
             if (answerType == "Answer")
                 speechAnswer = answer && answer[0].answer;
@@ -310,10 +310,10 @@ const DeveloperTools = () => {
             setIsSpeaking(true);
             audio.addEventListener('ended', () => {
                 setIsSpeaking(false);
-            });    
+            });
         }
     };
-    
+
     const stopSynthesis = () => {
         audio.pause();
         setIsSpeaking(false);
@@ -368,7 +368,7 @@ const DeveloperTools = () => {
         setInputCode('');
         setOutputCode('');
     };
-  
+
     const onOutputLangChange = (event?: React.FormEvent<HTMLDivElement>, item?: IDropdownOption): void => {
         setSelectedOutputLangItem(item);
         setOutputLanguage(item?.key as string);
@@ -379,11 +379,11 @@ const DeveloperTools = () => {
 
         <div className={styles.root}>
             <div className={styles.developerToolsContainer}>
-            <Pivot aria-label="Chat">
+                <Pivot aria-label="Chat">
                     <PivotItem
                         headerText="Code Translation"
                         headerButtonProps={{
-                        'data-order': 1,
+                            'data-order': 1,
                         }}
                     >
                         <div className={styles.developerToolsTopSection}>
@@ -391,9 +391,9 @@ const DeveloperTools = () => {
                                 <ClearChatButton className={styles.settingsButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
                                 <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                             </div> */}
-                            <br/>
+                            <br />
                             <div className={styles.commandsContainer}>
-                            &nbsp;&nbsp;<Label>LLM</Label>
+                                &nbsp;&nbsp;<Label>LLM</Label>
                                 &nbsp;
                                 <Dropdown
                                     selectedKey={selectedEmbeddingItem ? selectedEmbeddingItem.key : undefined}
@@ -415,17 +415,17 @@ const DeveloperTools = () => {
                                     options={modelOptions}
                                     disabled={false}
                                     styles={dropdownStyles}
-                                />                               
+                                />
                             </div>
-                            <br/>
+                            <br />
                             <h1 className={styles.developerToolsTitle}>Code Conversion</h1>
                             <div className={styles.example}>
                                 <p className={styles.exampleText}><b>Document Summary</b> : {summary}</p>
                             </div>
-                            <br/>
+                            <br />
                         </div>
                         <div className={styles.developerToolsBottomSection}>
-                            <Stack enableScopedSelectors  tokens={innerStackTokens}>
+                            <Stack enableScopedSelectors tokens={innerStackTokens}>
                                 <Stack.Item grow styles={stackItemStyles}>
                                     <div className={styles.commandsContainer}>
                                         <Label>Input Language: </Label>
@@ -453,22 +453,22 @@ const DeveloperTools = () => {
                                         />
                                         &nbsp;
                                         <PrimaryButton text={isLoading ? 'Translating...' : 'Translate'}
-                                        disabled={isLoading} onClick={handleTranslate} />
+                                            disabled={isLoading} onClick={handleTranslate} />
                                     </div>
-                                    </Stack.Item>
-                                    <Stack.Item grow styles={stackItemStyles}>
-                                        <TextField disabled={true} label={translateError ? '' : translateText} errorMessage={!translateError ? '' : translateText} />
-                                    </Stack.Item>
-                                    <Stack.Item grow styles={stackItemStyles}>
+                                </Stack.Item>
+                                <Stack.Item grow styles={stackItemStyles}>
+                                    <TextField disabled={true} label={translateError ? '' : translateText} errorMessage={!translateError ? '' : translateText} />
+                                </Stack.Item>
+                                <Stack.Item grow styles={stackItemStyles}>
                                     <div className={styles.commandsContainer}>
                                         {inputLanguage === 'Natural Language' ? (
-                                                <textarea
+                                            <textarea
                                                 style={{ resize: 'none' }}
                                                 value={inputCode}
                                                 onChange={(e) => {
                                                     setInputCode(e.target.value);
                                                     setHasTranslated(false);
-                                                    }}
+                                                }}
                                                 disabled={!isLoading}
                                             />
                                         ) : (
@@ -509,11 +509,11 @@ const DeveloperTools = () => {
                     <PivotItem
                         headerText="Prompt Guru"
                         headerButtonProps={{
-                        'data-order': 2,
+                            'data-order': 2,
                         }}
                     >
                         <div className={styles.developerToolsTopSection}>
-                            <br/>
+                            <br />
                             <div className={styles.commandsContainer}>
                                 &nbsp;&nbsp;<Label>LLM</Label>
                                 &nbsp;
@@ -537,15 +537,15 @@ const DeveloperTools = () => {
                                     options={modelOptions}
                                     disabled={false}
                                     styles={dropdownStyles}
-                                />                               
+                                />
                             </div>
-                            <br/>
+                            <br />
                             <h1 className={styles.developerToolsTitle}>Prompt Guru</h1>
                             <div className={styles.example}>
                                 <p className={styles.exampleText}><b>Document Summary </b> : {promptSummary}
                                 </p>
                             </div>
-                            <br/>
+                            <br />
                             <div className={styles.developerToolsQuestionInput}>
                                 <QuestionInput
                                     placeholder="Ask me anything"
@@ -555,11 +555,11 @@ const DeveloperTools = () => {
                                 />
                             </div>
                             {!answer && (<h4 className={styles.developerToolsEmptyStateSubtitle}>Ask anything or try from following example</h4>)}
-                            {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner/></div> : null}
+                            {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner /></div> : null}
                             <ExampleList onExampleClicked={onExampleClicked}
-                            EXAMPLES={
-                                exampleList
-                            } />
+                                EXAMPLES={
+                                    exampleList
+                                } />
                         </div>
                         <div className={styles.developerToolsBottomSection}>
                             <div className={styles.developerToolsBottomSection}>
@@ -570,14 +570,14 @@ const DeveloperTools = () => {
                                             <Stack horizontal horizontalAlign="space-between">
                                                 <Answer
                                                     answer={answer[0]}
-                                                    isSpeaking = {isSpeaking}
+                                                    isSpeaking={isSpeaking}
                                                     onCitationClicked={x => onShowCitation(x)}
                                                     onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
                                                     onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
                                                     onFollowupQuestionClicked={q => makePromptApiRequest(q)}
-                                                    onSpeechSynthesisClicked={() => isSpeaking? stopSynthesis(): startSynthesis("Answer", answer[1])}
+                                                    onSpeechSynthesisClicked={() => isSpeaking ? stopSynthesis() : startSynthesis("Answer", answer[1])}
                                                 />
-                                            </Stack>                               
+                                            </Stack>
                                         </div>
                                     </div>
                                 )}
@@ -592,11 +592,11 @@ const DeveloperTools = () => {
                     <PivotItem
                         headerText="OpenAI Playground"
                         headerButtonProps={{
-                        'data-order': 3,
+                            'data-order': 3,
                         }}
                     >
                         <div className={styles.developerToolsTopSection}>
-                            <br/>
+                            <br />
                             <div className={styles.commandsContainer}>
                                 &nbsp;&nbsp;<Label>LLM</Label>
                                 &nbsp;
@@ -620,17 +620,17 @@ const DeveloperTools = () => {
                                     options={modelOptions}
                                     disabled={false}
                                     styles={dropdownStyles}
-                                />                               
+                                />
                             </div>
-                            <br/>
+                            <br />
                             <h1 className={styles.developerToolsTitle}>OpenAI Playground</h1>
-                            <br/>
+                            <br />
                             <Stack enableScopedSelectors tokens={stackTokens}>
                                 <Stack enableScopedSelectors horizontal horizontalAlign="start" styles={stackStyles}>
                                     <span style={itemStyles}>
-                                        <TextField 
+                                        <TextField
                                             multiline
-                                            styles={{root: {width: '600px', height: '500px'}}}
+                                            styles={{ root: { width: '600px', height: '500px' } }}
                                             label="Prompt"
                                             value={gptPrompt}
                                             rows={25}
@@ -648,9 +648,9 @@ const DeveloperTools = () => {
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                     </span>
                                     <span style={itemStyles}>
-                                        <TextField 
+                                        <TextField
                                             multiline
-                                            styles={{root: {width: '700px', height: '500px'}}}
+                                            styles={{ root: { width: '700px', height: '500px' } }}
                                             label="OpenAI Summary"
                                             readOnly
                                             value={gptSummary}
@@ -664,7 +664,7 @@ const DeveloperTools = () => {
                                 </Stack>
                             </Stack>
                             <PrimaryButton text={isLoading ? 'Completion...' : 'Completion'}
-                                        disabled={isLoading} onClick={gptCompletion} />
+                                disabled={isLoading} onClick={gptCompletion} />
                         </div>
                     </PivotItem>
                 </Pivot>

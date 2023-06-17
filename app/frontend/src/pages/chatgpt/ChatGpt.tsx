@@ -9,7 +9,7 @@ import styles from "./ChatGpt.module.css";
 import { Label } from '@fluentui/react/lib/Label';
 import { ExampleList, ExampleModel } from "../../components/Example";
 
-import { chatGptApi, chatGpt3Api, Approaches, AskResponse, ChatRequest, ChatTurn, refreshIndex, getSpeechApi  } from "../../api";
+import { chatGptApi, chatGpt3Api, Approaches, AskResponse, ChatRequest, ChatTurn, refreshIndex, getSpeechApi } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { UserChatMessage } from "../../components/UserChatMessage";
@@ -38,6 +38,7 @@ const ChatGpt = () => {
 
     const lastQuestionRef = useRef<string>("");
     const lastQuestionRef3 = useRef<string>("");
+    const lastQuestionRef4 = useRef<string>("");
     const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,21 +57,22 @@ const ChatGpt = () => {
     const [exampleLoading, setExampleLoading] = useState(false)
 
     const [selectedIndex, setSelectedIndex] = useState<string>();
-    const [indexMapping, setIndexMapping] = useState<{ key: string; iType: string; summary:string; qa:string;  }[]>();
-    const [exampleList, setExampleList] = useState<ExampleModel[]>([{text:'', value: ''}]);
+    const [indexMapping, setIndexMapping] = useState<{ key: string; iType: string; summary: string; qa: string; }[]>();
+    const [exampleList, setExampleList] = useState<ExampleModel[]>([{ text: '', value: '' }]);
     const [summary, setSummary] = useState<string>();
     const [qa, setQa] = useState<string>('');
 
     const [selectedEmbeddingItem, setSelectedEmbeddingItem] = useState<IDropdownOption>();
 
     const embeddingOptions = [
+
         {
-          key: 'azureopenai',
-          text: 'Azure Open AI'
+            key: 'openai',
+            text: 'Open AI'
         },
         {
-          key: 'openai',
-          text: 'Open AI'
+            key: 'azureopenai',
+            text: 'Azure Open AI'
         }
         // {
         //   key: 'local',
@@ -107,7 +109,7 @@ const ChatGpt = () => {
             const result = await chatGptApi(request, String(selectedItem?.key), String(selectedIndex));
             //setAnswers([...answers, [question, result]]);
             setAnswers([...answers, [question, result, null]]);
-            if(useAutoSpeakAnswers){
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setAnswers([...answers, [question, result, speechUrl]]);
                 startOrStopSynthesis("gpt35", speechUrl, answers.length);
@@ -147,7 +149,7 @@ const ChatGpt = () => {
             };
             const result = await chatGpt3Api(question, request, String(selectedItem?.key), String(selectedIndex));
             setAnswers3([...answers3, [question, result, null]]);
-            if(useAutoSpeakAnswers){
+            if (useAutoSpeakAnswers) {
                 const speechUrl = await getSpeechApi(result.answer);
                 setAnswers3([...answers3, [question, result, speechUrl]]);
                 startOrStopSynthesis("gpt3", speechUrl, answers.length);
@@ -187,28 +189,28 @@ const ChatGpt = () => {
         makeApiRequest3(example);
     };
 
-    const startOrStopSynthesis = async (answerType:string, url: string | null, index: number) => {
-        if(runningIndex === index) {
+    const startOrStopSynthesis = async (answerType: string, url: string | null, index: number) => {
+        if (runningIndex === index) {
             audio.pause();
             setRunningIndex(-1);
             return;
         }
 
-        if(runningIndex !== -1) {
+        if (runningIndex !== -1) {
             audio.pause();
             setRunningIndex(-1);
         }
 
-        if(url === null) {
+        if (url === null) {
             let speechAnswer;
             if (answerType === 'gpt3') {
                 answers3.map((answer, index) => {
                     speechAnswer = answer[1].answer
-                })    
+                })
             } else if (answerType === 'gpt35') {
                 answers.map((answer, index) => {
                     speechAnswer = answer[1].answer
-                })                
+                })
             }
             const speechUrl = await getSpeechApi(speechAnswer || '');
             if (speechUrl === null) {
@@ -235,30 +237,29 @@ const ChatGpt = () => {
         const indexType = []
 
         //const blobs = containerClient.listBlobsFlat(listOptions)
-        const blobs = await refreshIndex()       
+        const blobs = await refreshIndex()
         for (const blob of blobs.values) {
-          if (blob.embedded == "true")
-          {
-            files.push({
-                text: blob.indexName,
-                key: blob.namespace
-            })
-            indexType.push({
-                    key:blob.namespace,
-                    iType:blob.indexType,
-                    summary:blob.summary,
-                    qa:blob.qa
-            })
-          }
+            if (blob.embedded == "true") {
+                files.push({
+                    text: blob.indexName,
+                    key: blob.namespace
+                })
+                indexType.push({
+                    key: blob.namespace,
+                    iType: blob.indexType,
+                    summary: blob.summary,
+                    qa: blob.qa
+                })
+            }
         }
-        var uniqFiles = files.filter((v,i,a)=>a.findIndex(v2=>(v2.key===v.key))===i)
+        var uniqFiles = files.filter((v, i, a) => a.findIndex(v2 => (v2.key === v.key)) === i)
 
         setOptions(uniqFiles)
         setSelectedItem(uniqFiles[0])
 
         const defaultKey = uniqFiles[0].key
-       
-        var uniqIndexType = indexType.filter((v,i,a)=>a.findIndex(v2=>(v2.key===v.key))===i)
+
+        var uniqIndexType = indexType.filter((v, i, a) => a.findIndex(v2 => (v2.key === v.key)) === i)
 
         for (const item of uniqIndexType) {
             if (item.key == defaultKey) {
@@ -267,14 +268,14 @@ const ChatGpt = () => {
                 setQa(item.qa)
 
                 const sampleQuestion = []
-                const  questionList = item.qa.split("\\n")
+                const questionList = item.qa.split("\\n")
                 for (const item of questionList) {
                     if ((item != '')) {
                         sampleQuestion.push({
                             text: item.replace(/[0-9]./g, ''),
                             value: item.replace(/[0-9]./g, '')
                         })
-                    } 
+                    }
                 }
                 const generatedExamples: ExampleModel[] = sampleQuestion
                 setExampleList(generatedExamples)
@@ -301,14 +302,14 @@ const ChatGpt = () => {
 
                 const sampleQuestion = []
 
-                const  questionList = item.qa.split("\\n")
+                const questionList = item.qa.split("\\n")
                 for (const item of questionList) {
                     if ((item != '')) {
                         sampleQuestion.push({
                             text: item.replace(/[0-9]./g, ''),
                             value: item.replace(/[0-9]./g, '')
                         })
-                    } 
+                    }
                 }
                 const generatedExamples: ExampleModel[] = sampleQuestion
                 setExampleList(generatedExamples)
@@ -392,16 +393,16 @@ const ChatGpt = () => {
                     <PivotItem
                         headerText="GPT3.5"
                         headerButtonProps={{
-                        'data-order': 1,
+                            'data-order': 1,
                         }}
                     >
                         <div className={styles.commandsContainer}>
                             <ClearChatButton className={styles.commandButton} onClick={clearChat} disabled={!lastQuestionRef.current || isLoading} />
                             <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                            <div className={styles.commandButton}>{selectedItem ? 
-                                "Document Name : "  + selectedItem.text : undefined}</div>
+                            <div className={styles.commandButton}>{selectedItem ?
+                                "Document Name : " + selectedItem.text : undefined}</div>
                         </div>
-                         <div className={styles.chatRoot}>
+                        <div className={styles.chatRoot}>
                             <div className={styles.chatContainer}>
                                 {!lastQuestionRef.current ? (
                                     <div className={styles.chatEmptyState}>
@@ -419,11 +420,11 @@ const ChatGpt = () => {
                                                 onSend={question => makeApiRequest(question)}
                                             />
                                         </div>
-                                        {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner/></div> : null}
+                                        {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner /></div> : null}
                                         <ExampleList onExampleClicked={onExampleClicked}
-                                        EXAMPLES={
-                                            exampleList
-                                        } />
+                                            EXAMPLES={
+                                                exampleList
+                                            } />
                                     </div>
                                 ) : (
                                     <div className={styles.chatMessageStream}>
@@ -434,7 +435,7 @@ const ChatGpt = () => {
                                                     <Answer
                                                         key={index}
                                                         answer={answer[1]}
-                                                        isSpeaking = {runningIndex === index}
+                                                        isSpeaking={runningIndex === index}
                                                         isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
                                                         onCitationClicked={c => onShowCitation(c, index)}
                                                         onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
@@ -495,7 +496,7 @@ const ChatGpt = () => {
                                 onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                                 isFooterAtBottom={true}
                             >
-                                <br/>
+                                <br />
                                 <div>
                                     <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>
                                     <Dropdown
@@ -509,7 +510,7 @@ const ChatGpt = () => {
                                     &nbsp;
                                     <Label className={styles.commandsContainer}>Index Type : {selectedIndex}</Label>
                                 </div>
-                                <br/>
+                                <br />
                                 <div>
                                     <Label>LLM Model</Label>
                                     <Dropdown
@@ -593,16 +594,16 @@ const ChatGpt = () => {
                     <PivotItem
                         headerText="GPT3"
                         headerButtonProps={{
-                        'data-order': 2,
+                            'data-order': 2,
                         }}
                     >
                         <div className={styles.commandsContainer}>
                             <ClearChatButton className={styles.commandButton} onClick={clearChat3} disabled={!lastQuestionRef3.current || isLoading} />
                             <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
-                            <div className={styles.commandButton}>{selectedItem ? 
-                                "Document Name : "  + selectedItem.text : undefined}</div>
+                            <div className={styles.commandButton}>{selectedItem ?
+                                "Document Name : " + selectedItem.text : undefined}</div>
                         </div>
-                         <div className={styles.chatRoot}>
+                        <div className={styles.chatRoot}>
                             <div className={styles.chatContainer}>
                                 {!lastQuestionRef3.current ? (
                                     <div className={styles.chatEmptyState}>
@@ -620,11 +621,11 @@ const ChatGpt = () => {
                                                 onSend={question => makeApiRequest3(question)}
                                             />
                                         </div>
-                                        {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner/></div> : null}
+                                        {exampleLoading ? <div><span>Please wait, Generating Sample Question</span><Spinner /></div> : null}
                                         <ExampleList onExampleClicked={onExampleClicked3}
-                                        EXAMPLES={
-                                            exampleList
-                                        } />
+                                            EXAMPLES={
+                                                exampleList
+                                            } />
                                     </div>
                                 ) : (
                                     <div className={styles.chatMessageStream}>
@@ -635,7 +636,7 @@ const ChatGpt = () => {
                                                     <Answer
                                                         key={index}
                                                         answer={answer[1]}
-                                                        isSpeaking = {runningIndex === index}
+                                                        isSpeaking={runningIndex === index}
                                                         isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
                                                         onCitationClicked={c => onShowCitation(c, index)}
                                                         onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
@@ -696,7 +697,7 @@ const ChatGpt = () => {
                                 onRenderFooterContent={() => <DefaultButton onClick={() => setIsConfigPanelOpen(false)}>Close</DefaultButton>}
                                 isFooterAtBottom={true}
                             >
-                                <br/>
+                                <br />
                                 <div>
                                     <DefaultButton onClick={refreshBlob}>Refresh Docs</DefaultButton>
                                     <Dropdown
@@ -710,7 +711,7 @@ const ChatGpt = () => {
                                     &nbsp;
                                     <Label className={styles.commandsContainer}>Index Type : {selectedIndex}</Label>
                                 </div>
-                                <br/>
+                                <br />
                                 <div>
                                     <Label>LLM Model</Label>
                                     <Dropdown
@@ -791,9 +792,9 @@ const ChatGpt = () => {
                             </Panel>
                         </div>
                     </PivotItem>
-              </Pivot>
+                </Pivot>
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { ChoiceGroup, IChoiceGroupOption, Spinner } from "@fluentui/react";
 import { TextField, PrimaryButton, Label, DefaultPalette, Stack, IStackStyles, IStackTokens } from "@fluentui/react";
-import { Checkbox, Panel, DefaultButton,  SpinButton } from "@fluentui/react";
+import { Checkbox, Panel, DefaultButton, SpinButton } from "@fluentui/react";
 
 import styles from "./Edgar.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
@@ -16,14 +16,14 @@ import { Link } from '@fluentui/react/lib/Link';
 import { SettingsButton } from "../../components/SettingsButton/SettingsButton";
 
 type Item = {
-    company:  { label: string; };
-    filingLink:  { label: string; };
-    contentSummary:  { label: string; };
-    filingDate:  { label: string; };
-    filingType:  { label: string; };
-    reportPeriod:  { label: string; };
-    content:  { label: string; };
-  };
+    company: { label: string; };
+    filingLink: { label: string; };
+    contentSummary: { label: string; };
+    filingDate: { label: string; };
+    filingType: { label: string; };
+    reportPeriod: { label: string; };
+    content: { label: string; };
+};
 
 const Edgar = () => {
     const [selectedItem, setSelectedItem] = useState<IDropdownOption>();
@@ -40,8 +40,8 @@ const Edgar = () => {
 
     //const [selectedIndex, setSelectedIndex] = useState<IDropdownOption>();
     const [selectedIndex, setSelectedIndex] = useState<string>();
-    const [exampleList, setExampleList] = useState<ExampleModel[]>([{text:'', value: ''}]);
-    const [exampleLoading, setExampleLoading] = useState(false)     
+    const [exampleList, setExampleList] = useState<ExampleModel[]>([{ text: '', value: '' }]);
+    const [exampleLoading, setExampleLoading] = useState(false)
 
     const [selectedEmbeddingItem, setSelectedEmbeddingItem] = useState<IDropdownOption>();
     const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300 } };
@@ -51,25 +51,25 @@ const Edgar = () => {
     const [retrieveCount, setRetrieveCount] = useState<number>(3);
 
     const chainType = [
-        { key: 'stuff', text: 'Stuff'},
+        { key: 'stuff', text: 'Stuff' },
         { key: 'map_rerank', text: 'Map ReRank' },
         { key: 'map_reduce', text: 'Map Reduce' },
-        { key: 'refine', text: 'Refine'},
+        { key: 'refine', text: 'Refine' },
     ]
 
     const embeddingOptions = [
-            {
-              key: 'azureopenai',
-              text: 'Azure Open AI'
-            },
-            {
-              key: 'openai',
-              text: 'Open AI'
-            }
-            // {
-            //   key: 'local',
-            //   text: 'Local Embedding'
-            // }
+        {
+            key: 'openai',
+            text: 'Open AI'
+        },
+        {
+            key: 'azureopenai',
+            text: 'Azure Open AI'
+        }
+        // {
+        //   key: 'local',
+        //   text: 'Local Embedding'
+        // }
     ]
 
     const onChainChange = (event: React.FormEvent<HTMLDivElement>, item?: IDropdownOption): void => {
@@ -81,16 +81,16 @@ const Edgar = () => {
     };
 
     const onEmbeddingChange = (event?: React.FormEvent<HTMLDivElement>, item?: IDropdownOption): void => {
-      setSelectedEmbeddingItem(item);
+        setSelectedEmbeddingItem(item);
     };
 
     const columns: IColumn[] = [
         {
-          key: 'company',
-          name: 'Company',
-          fieldName: 'company',
-          minWidth: 150,
-          isMultiline: true,
+            key: 'company',
+            name: 'Company',
+            fieldName: 'company',
+            minWidth: 150,
+            isMultiline: true,
         },
         {
             key: 'filingDate',
@@ -105,12 +105,12 @@ const Edgar = () => {
             minWidth: 80
         },
         {
-          key: 'summary',
-          name: 'Summary',
-          isMultiline: true,
-          minWidth: 900,
-          isResizable: true,
-          fieldName: 'contentSummary',
+            key: 'summary',
+            name: 'Summary',
+            isMultiline: true,
+            minWidth: 900,
+            isResizable: true,
+            fieldName: 'contentSummary',
         },
         // {
         //     key: 'content',
@@ -129,13 +129,13 @@ const Edgar = () => {
             onRender: item => (
                 // eslint-disable-next-line react/jsx-no-bind
                 <Link href={item.filingLink}>
-                  View
+                    View
                 </Link>
-              ),
-        }  
+            ),
+        }
     ];
-  
-   
+
+
     const makeApiRequest = async (question: string) => {
         lastQuestionRef.current = question;
 
@@ -146,10 +146,10 @@ const Edgar = () => {
 
         try {
             const result = await secSearch('cogsearchvs', 'secdocs', question, String(retrieveCount), String(selectedEmbeddingItem?.key));
-            
+
             const itemsResponse: Item[] = [];
             console.log(result.values[0].data.text);
-            result.values[0].data.text.forEach((item: { company: any; completeFilingLink: any; contentSummary: any; filingDate: any; filingType: any; reportPeriod: any; content:any }) => {
+            result.values[0].data.text.forEach((item: { company: any; completeFilingLink: any; contentSummary: any; filingDate: any; filingType: any; reportPeriod: any; content: any }) => {
                 itemsResponse.push({
                     company: item.company,
                     filingLink: item.completeFilingLink,
@@ -188,7 +188,7 @@ const Edgar = () => {
         <div >
             <div >
                 <div className={styles.commandsContainer}>
-                        <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
+                    <SettingsButton className={styles.settingsButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                 </div>
                 <div className={styles.edgarTopSection}>
                     <h1 className={styles.edgarTitle}>Ask your financial data</h1>
@@ -255,7 +255,7 @@ const Edgar = () => {
                         disabled={false}
                         styles={dropdownStyles}
                     />
-                    <br/>
+                    <br />
                     <SpinButton
                         className={styles.edgarSettingsSeparator}
                         label="Retrieve this many documents from search:"
@@ -264,8 +264,8 @@ const Edgar = () => {
                         defaultValue={retrieveCount.toString()}
                         onChange={onRetrieveCountChange}
                     />
-                    <br/>
-                    <Dropdown 
+                    <br />
+                    <Dropdown
                         label="Chain Type"
                         onChange={onChainChange}
                         selectedKey={selectedChain ? selectedChain.key : 'stuff'}
@@ -274,7 +274,7 @@ const Edgar = () => {
                         styles={dropdownStyles}
                     />
                 </div>
-                <br/>
+                <br />
             </Panel>
         </div>
     );
