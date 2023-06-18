@@ -130,7 +130,7 @@ const Layout = () => {
                             </li>
                         </ul>
                     </nav>
-                    <h4 className={styles.headerRightText}>Azure OpenAI</h4>
+                    <h4 className={styles.headerRightText}>Polaris Poly Chat</h4>
                 </div>
             </header>
             <Panel
