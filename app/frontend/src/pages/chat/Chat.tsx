@@ -8,12 +8,13 @@ import styles from "./Chat.module.css";
 import { Label } from '@fluentui/react/lib/Label';
 import { ExampleList, ExampleModel } from "../../components/Example";
 
-import { chatJsApi, refreshIndex, AskResponse } from "../../api";
 import { AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
 import { ClearChatButton } from "../../components/ClearChatButton";
+import { AskResponse, refreshIndex } from "../../api";
+import { chatJsApi } from "../../api/chatJsApi";
 
 // import { OpenAI } from "langchain";
 
