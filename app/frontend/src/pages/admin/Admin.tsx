@@ -14,11 +14,13 @@ import { Label } from '@fluentui/react/lib/Label';
 import { Stack, IStackStyles, IStackTokens, IStackItemStyles } from '@fluentui/react/lib/Stack';
 import { DefaultPalette, EdgeChromiumHighContrastSelector } from '@fluentui/react/lib/Styling';
 import { TextField } from '@fluentui/react/lib/TextField';
-import { verifyPassword, refreshIndex, AskResponse, indexManagement } from "../../api";
 
 import styles from "./Admin.module.css";
 
 import { useDropzone } from 'react-dropzone'
+import { refreshIndex } from "../../api";
+import { indexManagement } from "../../api/indexManagement";
+import { verifyPassword } from "../../api/verifyPassword";
 
 const buttonStyles = makeStyles({
   innerWrapper: {

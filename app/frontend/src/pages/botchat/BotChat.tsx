@@ -8,8 +8,8 @@ import styles from "./BotChat.module.css";
 import { Label } from '@fluentui/react/lib/Label';
 import { ExampleModel } from "../../components/Example";
 
-import { refreshIndex } from "../../api";
 import { ClearChatButton } from "../../components/ClearChatButton";
+import { refreshIndex } from "../../api/api";
 
 //const directLine = useMemo(() => createDirectLine({ token: 'xPuhSjJIjLg.Tn4pvBAvKuuGv3RQMCoh2-HtyRxUniqErFbtsbQpJQs' }), []);
 //const directLine = createDirectLine({ token: 'xPuhSjJIjLg.Tn4pvBAvKuuGv3RQMCoh2-HtyRxUniqErFbtsbQpJQs' });
