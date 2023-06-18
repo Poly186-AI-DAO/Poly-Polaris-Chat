@@ -1,22 +1,20 @@
 import { useRef, useState, useEffect, useMemo } from "react";
-import { Checkbox, Panel, DefaultButton, TextField, SpinButton, Spinner, List } from "@fluentui/react";
-import { SparkleFilled, BarcodeScanner24Filled } from "@fluentui/react-icons";
+import { Checkbox, Panel, DefaultButton, TextField, SpinButton, Spinner } from "@fluentui/react";
+import { SparkleFilled } from "@fluentui/react-icons";
 
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { Dropdown, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 import styles from "./Chat.module.css";
 import { Label } from '@fluentui/react/lib/Label';
 import { ExampleList, ExampleModel } from "../../components/Example";
 
-import { chatJsApi, refreshIndex, AskResponse, ChatRequest, ChatTurn } from "../../api";
-import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
+import { chatJsApi, refreshIndex, AskResponse } from "../../api";
+import { AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
 import { ClearChatButton } from "../../components/ClearChatButton";
-import { EventStreamContentType, fetchEventSource } from '@microsoft/fetch-event-source'
 
-import { BlobServiceClient } from "@azure/storage-blob";
 // import { OpenAI } from "langchain";
 
 

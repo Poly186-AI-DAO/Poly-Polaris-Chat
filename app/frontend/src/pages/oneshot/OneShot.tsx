@@ -4,7 +4,6 @@ import { Checkbox, ChoiceGroup, IChoiceGroupOption, Panel, DefaultButton, Spinne
 import styles from "./OneShot.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
-import { askApi, askAgentApi, askTaskAgentApi, Approaches, AskResponse, AskRequest, refreshIndex, getSpeechApi, summaryAndQa } from "../../api";
 import { Answer, AnswerError } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
@@ -16,6 +15,12 @@ import { ClearChatButton } from "../../components/ClearChatButton";
 import { Pivot, PivotItem } from '@fluentui/react';
 import { IStackStyles, IStackTokens, IStackItemStyles } from '@fluentui/react/lib/Stack';
 import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import { Approaches, AskResponse, refreshIndex, AskRequest } from "../../api";
+import { askAgentApi } from "../../api/askAgentApi";
+import { askApi } from "../../api/askApi";
+import { askTaskAgentApi } from "../../api/askTaskAgentApi";
+import { getSpeechApi } from "../../api/getSpeechApi";
+import { summaryAndQa } from "../../api/summaryAndQa";
 
 var audio = new Audio();
 

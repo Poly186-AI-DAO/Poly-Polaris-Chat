@@ -7,7 +7,6 @@ import styles from "./SqlAgent.module.css";
 import { Pivot, PivotItem } from '@fluentui/react';
 import { SparkleFilled } from "@fluentui/react-icons";
 
-import { sqlChat, AskResponse, sqlChain, getSpeechApi } from "../../api";
 import { Answer, AnswerError } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
@@ -16,6 +15,10 @@ import { SettingsButton } from "../../components/SettingsButton/SettingsButton";
 import { ClearChatButton } from "../../components/ClearChatButton";
 import { SqlViewer } from "../../components/SqlViewer";
 import { DataTable } from "../../components/DataTable/DataTable";
+import { AskResponse } from "../../api";
+import { getSpeechApi } from "../../api/getSpeechApi";
+import { sqlChain } from "../../api/sqlChain";
+import { sqlChat } from "../../api/sqlChat";
 
 var audio = new Audio();
 
