@@ -14,11 +14,14 @@ import { Label } from '@fluentui/react/lib/Label';
 import { Stack, IStackStyles, IStackTokens, IStackItemStyles } from '@fluentui/react/lib/Stack';
 import { DefaultPalette } from '@fluentui/react/lib/Styling';
 import { TextField } from '@fluentui/react/lib/TextField';
-import { AskResponse, processSummary, uploadSummaryBinaryFile, verifyPassword } from "../../api";
 
 import styles from "./Summary.module.css";
 
 import { useDropzone } from 'react-dropzone'
+import { AskResponse } from "../../api";
+import { processSummary } from "../../api/processSummary";
+import { uploadSummaryBinaryFile } from "../../api/uploadSummaryBinaryFile";
+import { verifyPassword } from "../../api/verifyPassword";
 
 const buttonStyles = makeStyles({
   innerWrapper: {

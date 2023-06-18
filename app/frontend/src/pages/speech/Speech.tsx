@@ -5,11 +5,14 @@ import { Checkbox, Panel, DefaultButton, SpinButton } from "@fluentui/react";
 import styles from "./Speech.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
-import { AskRequest, Approaches, getSpeechToken, textAnalytics, summarizer } from "../../api";
 
 import { ResultReason } from 'microsoft-cognitiveservices-speech-sdk'
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { SettingsButton } from "../../components/SettingsButton/SettingsButton";
+import { AskRequest, Approaches } from "../../api";
+import { getSpeechToken } from "../../api/getSpeechToken";
+import { summarizer } from "../../api/summarizer";
+import { textAnalytics } from "../../api/textAnalytics";
 var recognizer: speechsdk.SpeechRecognizer
 
 const stackStyles: IStackStyles = {

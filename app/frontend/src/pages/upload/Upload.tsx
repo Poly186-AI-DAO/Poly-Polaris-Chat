@@ -14,11 +14,15 @@ import { Label } from '@fluentui/react/lib/Label';
 import { Stack, IStackStyles, IStackTokens, IStackItemStyles } from '@fluentui/react/lib/Stack';
 import { DefaultPalette } from '@fluentui/react/lib/Styling';
 import { TextField } from '@fluentui/react/lib/TextField';
-import { processDoc, uploadFile, uploadBinaryFile, refreshIndex, verifyPassword } from "../../api";
 
 import styles from "./Upload.module.css";
 
 import { useDropzone } from 'react-dropzone'
+import { refreshIndex } from "../../api";
+import { processDoc } from "../../api/processDoc";
+import { uploadBinaryFile } from "../../api/uploadBinaryFile";
+import { uploadFile } from "../../api/uploadFile";
+import { verifyPassword } from "../../api/verifyPassword";
 
 const buttonStyles = makeStyles({
   innerWrapper: {

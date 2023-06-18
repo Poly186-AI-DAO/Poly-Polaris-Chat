@@ -1,15 +1,14 @@
-import React, {  useState, memo, useMemo, useEffect, useCallback } from "react";
-import { Checkbox, Panel, DefaultButton, TextField, SpinButton, Spinner, List } from "@fluentui/react";
-import { SparkleFilled, BarcodeScanner24Filled } from "@fluentui/react-icons";
-import ReactWebChat, { createStore, createDirectLine } from 'botframework-webchat';
+import React, {  useState, memo, useEffect } from "react";
+import { DefaultButton } from "@fluentui/react";
+import ReactWebChat, { createDirectLine } from 'botframework-webchat';
 
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { Dropdown, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 import styles from "./BotChat.module.css";
 import { Label } from '@fluentui/react/lib/Label';
-import { ExampleList, ExampleModel } from "../../components/Example";
+import { ExampleModel } from "../../components/Example";
 
-import { chatJsApi, refreshIndex, AskResponse, ChatRequest, ChatTurn } from "../../api";
+import { refreshIndex } from "../../api";
 import { ClearChatButton } from "../../components/ClearChatButton";
 
 //const directLine = useMemo(() => createDirectLine({ token: 'xPuhSjJIjLg.Tn4pvBAvKuuGv3RQMCoh2-HtyRxUniqErFbtsbQpJQs' }), []);

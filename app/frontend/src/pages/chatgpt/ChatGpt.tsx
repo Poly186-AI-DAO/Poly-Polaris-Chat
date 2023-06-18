@@ -9,13 +9,16 @@ import styles from "./ChatGpt.module.css";
 import { Label } from '@fluentui/react/lib/Label';
 import { ExampleList, ExampleModel } from "../../components/Example";
 
-import { chatGptApi, chatGpt3Api, Approaches, AskResponse, ChatRequest, ChatTurn, refreshIndex, getSpeechApi } from "../../api";
 import { Answer, AnswerError, AnswerLoading } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { UserChatMessage } from "../../components/UserChatMessage";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
 import { ClearChatButton } from "../../components/ClearChatButton";
 import { SettingsButton } from "../../components/SettingsButton";
+import { AskResponse, ChatTurn, ChatRequest, Approaches, refreshIndex } from "../../api";
+import { chatGpt3Api } from "../../api/chatGpt3Api";
+import { chatGptApi } from "../../api/chatGptApi";
+import { getSpeechApi } from "../../api/getSpeechApi";
 
 var audio = new Audio();
 

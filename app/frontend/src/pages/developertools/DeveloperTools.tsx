@@ -13,13 +13,17 @@ import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel
 import { SettingsButton } from "../../components/SettingsButton/SettingsButton";
 import { ClearChatButton } from "../../components/ClearChatButton";
 
-import { convertCode, AskResponse, getSpeechApi, promptGuru, summarizer, AskRequest, Approaches } from "../../api";
 import { ExampleList, ExampleModel } from "../../components/Example";
 import { IStackItemStyles } from '@fluentui/react/lib/Stack';
 
 import { StreamLanguage } from '@codemirror/language';
 import { go } from '@codemirror/legacy-modes/mode/go';
 import CodeMirror from '@uiw/react-codemirror';
+import { AskResponse, AskRequest, Approaches } from "../../api";
+import { convertCode } from "../../api/convertCode";
+import { getSpeechApi } from "../../api/getSpeechApi";
+import { promptGuru } from "../../api/promptGuru";
+import { summarizer } from "../../api/summarizer";
 
 var audio = new Audio();
 

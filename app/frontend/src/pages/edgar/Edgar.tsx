@@ -6,7 +6,6 @@ import { Checkbox, Panel, DefaultButton, SpinButton } from "@fluentui/react";
 import styles from "./Edgar.module.css";
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
-import { secSearch, AskResponse, AskRequest } from "../../api";
 import { Answer, AnswerError } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
 import { AnalysisPanel, AnalysisPanelTabs } from "../../components/AnalysisPanel";
@@ -14,6 +13,8 @@ import { ExampleList, ExampleModel } from "../../components/Example";
 import { DetailsList, DetailsListLayoutMode, Selection, SelectionMode, IColumn } from '@fluentui/react/lib/DetailsList';
 import { Link } from '@fluentui/react/lib/Link';
 import { SettingsButton } from "../../components/SettingsButton/SettingsButton";
+import { AskResponse } from "../../api";
+import { secSearch } from "../../api/secSearch";
 
 type Item = {
     company: { label: string; };
